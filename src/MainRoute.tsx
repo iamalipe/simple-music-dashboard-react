@@ -1,11 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import { queryClient } from "@/hooks/use-api-query";
 import PrivateLayout from "@/private-pages/private-layout";
+
+// NOTE: import pages
 import HomePage from "@/private-pages/home-page/home-page";
 import UserPage from "@/private-pages/user-page/user-page";
-
-import { QueryClient, QueryClientProvider } from "react-query";
-
-const queryClient = new QueryClient();
+import GenrePage from "@/private-pages/genre-page/genre-page";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter(
   [
@@ -20,6 +23,10 @@ const router = createBrowserRouter(
         {
           path: "/user",
           element: <UserPage />,
+        },
+        {
+          path: "/genre",
+          element: <GenrePage />,
         },
       ],
     },
@@ -46,6 +53,7 @@ const MainRoute = () => {
           }}
           router={router}
         />
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>
   );

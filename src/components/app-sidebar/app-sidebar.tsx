@@ -8,7 +8,7 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from "@/components/ui/sidebar";
-import { User, Home } from "lucide-react";
+import { User, Home, Music } from "lucide-react";
 // import { User, Home, MessageSquare } from "lucide-react";
 import AppSidebarMenuItem from "@/components/app-sidebar/app-sidebar-menu-item";
 // import { useAtomValue } from "jotai";
@@ -27,6 +27,11 @@ export function AppSidebar() {
       title: "User",
       url: "/user",
       icon: User,
+    },
+    {
+      title: "Genre",
+      url: "/genre",
+      icon: Music,
     },
   ];
   // const items = currentUser
