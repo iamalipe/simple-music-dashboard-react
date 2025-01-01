@@ -3,7 +3,7 @@
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 import { SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import { LucideProps } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 export type AppSidebarMenuItemProps = {
   title: string;

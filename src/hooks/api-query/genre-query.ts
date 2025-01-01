@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import api from "@/api/api";
-import { GenreType } from "@/api/genre-api";
+import { GenreRawType, GenreType } from "@/api/genre-api";
 import { ApiQueryParams } from "@/types/generic-type";
 
 export const genreQueryKey = ["genre"];
@@ -24,7 +24,7 @@ export const genreQuery = {
   useCreate: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: (data: Pick<GenreType, "name">) => api.genre.create(data),
+      mutationFn: (data: GenreRawType) => api.genre.create(data),
       onSuccess: () =>
         queryClient.invalidateQueries({ queryKey: genreQueryKey }),
     });
@@ -33,13 +33,8 @@ export const genreQuery = {
   useUpdate: () => {
     const queryClient = useQueryClient();
     return useMutation({
-      mutationFn: ({
-        id,
-        data,
-      }: {
-        id: string;
-        data: Partial<Pick<GenreType, "name">>;
-      }) => api.genre.update(id, data),
+      mutationFn: ({ id, data }: { id: string; data: Partial<GenreRawType> }) =>
+        api.genre.update(id, data),
       onSuccess: () =>
         queryClient.invalidateQueries({ queryKey: genreQueryKey }),
     });

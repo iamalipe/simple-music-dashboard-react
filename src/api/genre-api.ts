@@ -5,10 +5,18 @@ import { AxiosInstance } from "axios";
 export type GenreType = {
   id: string;
   name: string;
+  originYear?: string;
+  description?: string;
+  popularInCountry?: string;
   createdAt: string;
   updatedAt: string;
 };
 
+export type GenreRawType = Pick<
+  GenreType,
+  "name" | "originYear" | "description" | "popularInCountry"
+>;
+
 // Module-specific APIs
 export const genreAPI = (axiosInstance: AxiosInstance) =>
-  genericCRUD<GenreType, Pick<GenreType, "name">>(axiosInstance, "genre");
+  genericCRUD<GenreType, GenreRawType>(axiosInstance, "genre");
