@@ -14,4 +14,6 @@ const api = {
   genre: genreAPI(axiosInstance),
 };
 
+export type ApiType = typeof api;
+
 export default api;

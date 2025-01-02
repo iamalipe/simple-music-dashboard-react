@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Sidebar,
   SidebarContent,
@@ -8,7 +6,7 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from "@/components/ui/sidebar";
-import { User, Home, Music } from "lucide-react";
+import { Home, Music } from "lucide-react";
 // import { User, Home, MessageSquare } from "lucide-react";
 import AppSidebarMenuItem from "@/components/app-sidebar/app-sidebar-menu-item";
 // import { useAtomValue } from "jotai";
@@ -22,11 +20,6 @@ export function AppSidebar() {
       title: "Home",
       url: "/",
       icon: Home,
-    },
-    {
-      title: "User",
-      url: "/user",
-      icon: User,
     },
     {
       title: "Genre",
@@ -47,7 +40,7 @@ export function AppSidebar() {
   const items = [..._items];
 
   return (
-    <Sidebar className="mt-12 mb-8 h-[calc(100svh-5rem)]" variant="sidebar">
+    <Sidebar className="mt-16 mb-12 h-[calc(100svh-7rem)]" variant="sidebar">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Pages</SidebarGroupLabel>

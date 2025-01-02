@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { createFileRoute, getRouteApi } from "@tanstack/react-router";
+
 import { GenreType } from "@/api/genre-api";
 import {
   Pagination,
@@ -24,26 +27,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import apiQuery from "@/hooks/use-api-query";
-import ActionButtons from "@/private-pages/genre-page/action-buttons";
+import ActionButtons from "./!action-buttons";
 import { TableColumns, TablePagination, TableSort } from "@/types/table-type";
-import { useState } from "react";
 
-const GenrePage = () => {
-  const [tablePagination, setTablePagination] = useState<TablePagination>({
-    page: 1,
-    limit: 30,
-  });
+const GenreRoute = () => {
+  const routeApi = getRouteApi("/genre/");
+  const routeData = routeApi.useLoaderData();
 
-  const [tableSort, setTableSort] = useState<TableSort<GenreType>>({
-    orderBy: "createdAt",
-    order: "desc",
-  });
+  // const [tablePagination, setTablePagination] = useState<TablePagination>({
+  //   page: 1,
+  //   limit: 30,
+  // });
 
-  const { data, isLoading, isError, error } = apiQuery.genre.useGetAll({
-    ...tablePagination,
-    ...tableSort,
-  });
+  // const [tableSort, setTableSort] = useState<TableSort<GenreType>>({
+  //   orderBy: "createdAt",
+  //   order: "desc",
+  // });
+
+  console.log("routeData", routeData);
 
   const tableColumns: TableColumns<GenreType>[] = [
     {
@@ -87,7 +88,7 @@ const GenrePage = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.data?.map((genre, index) => {
+          {routeData?.data?.map((genre, index) => {
             return (
               <TableRow key={index}>
                 {tableColumns.map((column) => (
@@ -168,4 +169,8 @@ const GenrePage = () => {
   );
 };
 
-export default GenrePage;
+export const Route = createFileRoute("/genre/")({
+  component: GenreRoute,
+  loader: ({ context: { api } }) => api.genre.getAll(),
+  pendingComponent: () => <div>Loading...</div>,
+});

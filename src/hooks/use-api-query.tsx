@@ -27,4 +27,6 @@ const apiQuery = {
   genre: genreQuery,
 };
 
+export type ApiQuery = typeof apiQuery;
+
 export default apiQuery;
