@@ -1,7 +1,6 @@
 // import { useState } from "react";
 import { createFileRoute, getRouteApi } from "@tanstack/react-router";
 
-import { GenreType } from "@/api/genre-api";
 import {
   Table,
   TableBody,
@@ -11,12 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import ActionButtons from "./-action-buttons";
-import {
-  TableColumns,
-  // TablePagination, TableSort
-} from "@/types/table-type";
+
 import TableFooter from "@/components/data-table/table-footer";
+
+import ActionControls from "./-action-controls";
+import { useVisibleColumns } from "@/store/use-columns-view-store";
 
 const GenreRoute = () => {
   const routeApi = getRouteApi("/genre/");
@@ -32,36 +30,11 @@ const GenreRoute = () => {
   //   order: "desc",
   // });
 
-  const tableColumns: TableColumns<GenreType>[] = [
-    {
-      key: "name",
-      label: "Name",
-    },
-    {
-      key: "originYear",
-      label: "Origin year",
-    },
-    {
-      key: "description",
-      label: "Description",
-    },
-    {
-      key: "popularInCountry",
-      label: "Popular in country",
-    },
-    {
-      key: "createdAt",
-      label: "Created at",
-    },
-    {
-      key: "updatedAt",
-      label: "Updated at",
-    },
-  ];
+  const tableColumns = useVisibleColumns("genre");
 
   return (
     <main className="flex-1 overflow-hidden flex flex-col p-2 md:p-4 gap-2 md:gap-4">
-      <ActionButtons />
+      <ActionControls tableKey="genre" />
       {/* <div className="overflow-hidden"> */}
       {/* <div className="overflow-auto"> */}
       <Table>

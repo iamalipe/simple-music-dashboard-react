@@ -11,4 +11,5 @@ export type TableSort<T> = {
 export type TableColumns<T> = {
   key: keyof T;
   label: string;
+  toggleVisibility?: boolean; // default is true
 };
