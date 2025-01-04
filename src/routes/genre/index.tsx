@@ -1,20 +1,13 @@
 // import { useState } from "react";
 import { createFileRoute, getRouteApi } from "@tanstack/react-router";
-
-import {
-  Table,
-  TableBody,
-  // TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { zodValidator } from "@tanstack/zod-adapter";
 
 import TableFooter from "@/components/data-table/table-footer";
 
 import ActionControls from "./-action-controls";
 import { useVisibleColumns } from "@/store/use-columns-view-store";
+import DataTable from "@/components/data-table/data-table";
+import { paginationZodSchema } from "@/lib/generic-validation";
 
 const GenreRoute = () => {
   const routeApi = getRouteApi("/genre/");
@@ -35,39 +28,17 @@ const GenreRoute = () => {
   return (
     <main className="flex-1 overflow-hidden flex flex-col p-2 md:p-4 gap-2 md:gap-4">
       <ActionControls tableKey="genre" />
-      {/* <div className="overflow-hidden"> */}
-      {/* <div className="overflow-auto"> */}
-      <Table>
-        {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
-        <TableHeader>
-          <TableRow className="border-b-0 table-header-box-shadow">
-            {tableColumns.map((column) => (
-              <TableHead key={column.key}>{column.label}</TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {routeData?.data?.map((genre, index) => {
-            return (
-              <TableRow key={index}>
-                {tableColumns.map((column) => (
-                  <TableCell key={`${index}_${column.key}`}>
-                    {genre[column.key]}
-                  </TableCell>
-                ))}
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-      {/* </div> */}
-      <TableFooter />
+      <DataTable tableColumns={tableColumns} data={routeData?.data} />
+      <TableFooter pagination={routeData?.pagination} routeFrom="/genre" />
     </main>
   );
 };
 
 export const Route = createFileRoute("/genre/")({
   component: GenreRoute,
-  loader: ({ context: { apiQuery } }) => apiQuery.genre.getAll(),
+  loaderDeps: ({ search: { page, limit } }) => ({ page, limit }),
+  loader: ({ context: { apiQuery }, deps: deps }) =>
+    apiQuery.genre.getAll(deps),
+  validateSearch: zodValidator(paginationZodSchema),
   pendingComponent: () => <div>Loading...</div>,
 });

@@ -1,43 +1,44 @@
+import { LinkProps } from "@tanstack/react-router";
+
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
+  PaginationRouterLink,
 } from "@/components/ui/pagination";
+import { generatePaginationLinks } from "@/lib/table-utils";
+import { ApiPaginationReturn } from "@/types/generic-type";
 
 export type TablePaginationProps = {
-  page: number;
-  limit: number;
-  total: number;
-  onPageChange: (page: number) => void;
+  pagination: ApiPaginationReturn;
+  routeFrom: LinkProps["from"];
 };
-const TablePagination = () => {
+const TablePagination = (props: TablePaginationProps) => {
+  const { pagination, routeFrom } = props;
+
+  const totalPages = Math.ceil(pagination.total / pagination.limit);
+  const currentPage = pagination.page;
+  const paginationLinks = generatePaginationLinks(currentPage, totalPages);
+
   return (
     <Pagination>
       <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink isActive href="#">
-            1
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">2</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">30</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
+        {paginationLinks.map((link, index) => (
+          <PaginationItem key={index}>
+            {link.ellipsis ? (
+              <PaginationEllipsis />
+            ) : (
+              <PaginationRouterLink
+                isActive={link.active}
+                from={routeFrom}
+                search={(prev) => ({ ...prev, page: link.page })}
+              >
+                {link.page}
+              </PaginationRouterLink>
+            )}
+          </PaginationItem>
+        ))}
       </PaginationContent>
     </Pagination>
   );

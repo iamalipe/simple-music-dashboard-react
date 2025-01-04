@@ -1,47 +1,29 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import TablePagination from "./table-pagination";
+import { LinkProps } from "@tanstack/react-router";
 
-const TableFooter = () => {
+import { ApiPaginationReturn } from "@/types/generic-type";
+import TablePagination from "./table-pagination";
+import TableLimit from "./table-limit";
+
+export type TableFooterProps = {
+  pagination: ApiPaginationReturn;
+  routeFrom: LinkProps["from"];
+};
+const TableFooter = (props: TableFooterProps) => {
+  const { pagination, routeFrom } = props;
+
+  const totalPages = Math.ceil(pagination.total / pagination.limit);
+
   return (
     <div className="flex items-center justify-between px-2 py-1 flex-none">
       <div className="text-xs text-muted-foreground flex flex-col">
-        <span>Rows Selected: 12 of 30</span>
-        <span>Page: 1 of 5</span>
+        <span>Selected: 1 of {pagination.limit}</span>
+        <span>
+          Total : {pagination.total} • Page: {pagination.page} of {totalPages}
+        </span>
       </div>
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium whitespace-nowrap">
-            Rows per page
-          </span>
-          <Select
-            value={`1000`}
-            // onValueChange={(value) => {
-            //   onPageSizeChange(Number(value));
-            // }}
-          >
-            <SelectTrigger className="w-[100px]">
-              <SelectValue placeholder={"1000"} />
-            </SelectTrigger>
-            <SelectContent side="top">
-              <SelectItem key={"1000"} value={`1000`}>
-                1000
-              </SelectItem>
-              <SelectItem key={"20"} value={`20`}>
-                20
-              </SelectItem>
-              <SelectItem key={"30"} value={`30`}>
-                30
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <TablePagination />
+        <TableLimit pagination={pagination} />
+        <TablePagination pagination={pagination} routeFrom={routeFrom} />
       </div>
     </div>
   );
