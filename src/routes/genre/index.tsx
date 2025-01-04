@@ -13,11 +13,6 @@ const GenreRoute = () => {
   const routeApi = getRouteApi("/genre/");
   const routeData = routeApi.useLoaderData();
 
-  // const [tablePagination, setTablePagination] = useState<TablePagination>({
-  //   page: 1,
-  //   limit: 30,
-  // });
-
   // const [tableSort, setTableSort] = useState<TableSort<GenreType>>({
   //   orderBy: "createdAt",
   //   order: "desc",

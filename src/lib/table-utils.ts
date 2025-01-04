@@ -1,70 +1,52 @@
-export function generatePaginationLinks(
-  currentPage: number,
-  totalPages: number
-): Array<{
+type PaginationLinkType = {
   page: number;
   ellipsis: boolean;
   active: boolean;
-}> {
-  const links: Array<{ page: number; ellipsis: boolean; active: boolean }> = [];
+};
 
-  // Always show first page
-  links.push({ page: 1, ellipsis: false, active: currentPage === 1 });
+export function generatePaginationLinks(
+  currentPage: number,
+  totalPages: number
+): Array<PaginationLinkType> {
+  const links: Array<PaginationLinkType> = [];
 
-  if (totalPages <= 7) {
-    // Show all pages if total is 7 or less
-    for (let i = 2; i <= totalPages; i++) {
-      links.push({
-        page: i,
-        ellipsis: false,
-        active: currentPage === i,
-      });
-    }
+  if (totalPages < 1) {
     return links;
   }
 
-  // Handle cases with more than 7 pages
-  if (currentPage <= 3) {
-    // Near start: show 1,2,3,4,5 ... last
-    for (let i = 2; i <= 5; i++) {
-      links.push({
-        page: i,
-        ellipsis: false,
-        active: currentPage === i,
-      });
+  const addPageLink = (page: number, isActive: boolean) => {
+    links.push({ page, ellipsis: false, active: isActive });
+  };
+
+  const addEllipsis = () => {
+    if (links.length && !links[links.length - 1].ellipsis) {
+      links.push({ page: -1, ellipsis: true, active: false });
     }
-    links.push({ page: -1, ellipsis: true, active: false });
-    links.push({
-      page: totalPages,
-      ellipsis: false,
-      active: currentPage === totalPages,
-    });
-  } else if (currentPage >= totalPages - 2) {
-    // Near end: show 1 ... third-last, second-last, last
-    links.push({ page: -1, ellipsis: true, active: false });
-    for (let i = totalPages - 4; i <= totalPages; i++) {
-      links.push({
-        page: i,
-        ellipsis: false,
-        active: currentPage === i,
-      });
-    }
-  } else {
-    // Middle: show 1 ... current-1, current, current+1 ... last
-    links.push({ page: -1, ellipsis: true, active: false });
-    for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-      links.push({
-        page: i,
-        ellipsis: false,
-        active: currentPage === i,
-      });
-    }
-    links.push({ page: -1, ellipsis: true, active: false });
-    links.push({
-      page: totalPages,
-      ellipsis: false,
-      active: currentPage === totalPages,
-    });
+  };
+
+  // Add the first page
+  addPageLink(1, currentPage === 1);
+
+  // Add ellipsis before the current range
+  if (currentPage > 3) {
+    addEllipsis();
+  }
+
+  // Add the range around the current page
+  const startPage = Math.max(2, currentPage - 1);
+  const endPage = Math.min(totalPages - 1, currentPage + 1);
+  for (let i = startPage; i <= endPage; i++) {
+    addPageLink(i, currentPage === i);
+  }
+
+  // Add ellipsis after the current range
+  if (currentPage < totalPages - 2) {
+    addEllipsis();
+  }
+
+  // Add the last page
+  if (totalPages > 1) {
+    addPageLink(totalPages, currentPage === totalPages);
   }
 
   return links;
