@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { TableColumns } from "@/types/table-type";
+import TableSortHeader from "./table-sort-header";
 
 export type DataTableProps<T> = {
   tableColumns: TableColumns<T>[];
@@ -20,7 +21,13 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
       <TableHeader>
         <TableRow className="border-b-0 table-header-box-shadow">
           {tableColumns.map((column) => (
-            <TableHead key={column.key as string}>{column.label}</TableHead>
+            <TableHead key={column.key as string}>
+              {column.sortable !== false ? (
+                <TableSortHeader title={column.label} />
+              ) : (
+                column.label
+              )}
+            </TableHead>
           ))}
         </TableRow>
       </TableHeader>

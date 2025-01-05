@@ -12,4 +12,5 @@ export type TableColumns<T> = {
   key: keyof T;
   label: string;
   toggleVisibility?: boolean; // default is true
+  sortable?: boolean; // default is true
 };
