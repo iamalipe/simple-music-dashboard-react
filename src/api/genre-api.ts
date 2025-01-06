@@ -3,13 +3,13 @@ import { genericCRUD } from "@/lib/generic-crud";
 import { AxiosInstance } from "axios";
 
 export type GenreType = {
-  id: string;
   name: string;
-  originYear?: string;
-  description?: string;
-  popularInCountry?: string;
-  createdAt: string;
-  updatedAt: string;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  originYear?: string | null;
+  description?: string | null;
+  popularInCountry?: string | null;
 };
 
 export type GenreRawType = Pick<

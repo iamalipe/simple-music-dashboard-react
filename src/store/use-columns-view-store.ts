@@ -6,12 +6,16 @@ import { TableColumns } from "@/types/table-type";
 import genreTableColumns from "@/routes/genre/-table-columns";
 import { GenreType } from "@/api/genre-api";
 
+import artistTableColumns from "@/routes/artist/-table-columns";
+import { ArtistType } from "@/api/artist-api";
+
 export type TableColumnsForStore<T> = TableColumns<T> & {
   visibility: boolean;
 };
 
 export type ColumnsViewStore = {
   genre: TableColumnsForStore<GenreType>[];
+  artist: TableColumnsForStore<ArtistType>[];
   toggleColumnViewVisibility: (
     tableKey: ColumnsViewTableKeys,
     columnKey: string | number | symbol
@@ -19,12 +23,21 @@ export type ColumnsViewStore = {
   resetColumnVisibility: (tableKey: ColumnsViewTableKeys) => void;
 };
 
-export type ColumnsViewTableKeys = keyof Pick<ColumnsViewStore, "genre">;
+export type ColumnsViewTableKeys = keyof Pick<
+  ColumnsViewStore,
+  "genre" | "artist"
+>;
 
 const useColumnsViewStore = create(
   persist<ColumnsViewStore>(
     (set) => ({
       genre: genreTableColumns
+        .filter((col) => col.toggleVisibility !== false)
+        .map((column) => ({
+          ...column,
+          visibility: true,
+        })),
+      artist: artistTableColumns
         .filter((col) => col.toggleVisibility !== false)
         .map((column) => ({
           ...column,

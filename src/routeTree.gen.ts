@@ -8,28 +8,37 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as IndexImport } from './routes/index'
+import { Route as TestIndexImport } from './routes/test/index'
 import { Route as GenreIndexImport } from './routes/genre/index'
-
-// Create Virtual Routes
-
-const IndexLazyImport = createFileRoute('/')()
+import { Route as ArtistIndexImport } from './routes/artist/index'
 
 // Create/Update Routes
 
-const IndexLazyRoute = IndexLazyImport.update({
+const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
+
+const TestIndexRoute = TestIndexImport.update({
+  id: '/test/',
+  path: '/test/',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const GenreIndexRoute = GenreIndexImport.update({
   id: '/genre/',
   path: '/genre/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ArtistIndexRoute = ArtistIndexImport.update({
+  id: '/artist/',
+  path: '/artist/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -41,7 +50,14 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/artist/': {
+      id: '/artist/'
+      path: '/artist'
+      fullPath: '/artist'
+      preLoaderRoute: typeof ArtistIndexImport
       parentRoute: typeof rootRoute
     }
     '/genre/': {
@@ -51,44 +67,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GenreIndexImport
       parentRoute: typeof rootRoute
     }
+    '/test/': {
+      id: '/test/'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof TestIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
+  '/artist': typeof ArtistIndexRoute
   '/genre': typeof GenreIndexRoute
+  '/test': typeof TestIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
+  '/artist': typeof ArtistIndexRoute
   '/genre': typeof GenreIndexRoute
+  '/test': typeof TestIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
+  '/artist/': typeof ArtistIndexRoute
   '/genre/': typeof GenreIndexRoute
+  '/test/': typeof TestIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/genre'
+  fullPaths: '/' | '/artist' | '/genre' | '/test'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/genre'
-  id: '__root__' | '/' | '/genre/'
+  to: '/' | '/artist' | '/genre' | '/test'
+  id: '__root__' | '/' | '/artist/' | '/genre/' | '/test/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute
+  IndexRoute: typeof IndexRoute
+  ArtistIndexRoute: typeof ArtistIndexRoute
   GenreIndexRoute: typeof GenreIndexRoute
+  TestIndexRoute: typeof TestIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexLazyRoute: IndexLazyRoute,
+  IndexRoute: IndexRoute,
+  ArtistIndexRoute: ArtistIndexRoute,
   GenreIndexRoute: GenreIndexRoute,
+  TestIndexRoute: TestIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -102,14 +135,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/genre/"
+        "/artist/",
+        "/genre/",
+        "/test/"
       ]
     },
     "/": {
-      "filePath": "index.lazy.tsx"
+      "filePath": "index.tsx"
+    },
+    "/artist/": {
+      "filePath": "artist/index.tsx"
     },
     "/genre/": {
       "filePath": "genre/index.tsx"
+    },
+    "/test/": {
+      "filePath": "test/index.tsx"
     }
   }
 }
