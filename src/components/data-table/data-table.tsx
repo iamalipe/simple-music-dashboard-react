@@ -1,3 +1,6 @@
+import { flexRender } from "@tanstack/react-table";
+import { Table as TableType } from "@tanstack/react-table";
+
 import {
   Table,
   TableBody,
@@ -6,43 +9,46 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TableColumns } from "@/types/table-type";
-import TableSortHeader from "./table-sort-header";
+// import { TableColumns } from "@/types/table-type";
+// import TableSortHeader from "./table-sort-header";
 
 export type DataTableProps<T> = {
-  tableColumns: TableColumns<T>[];
-  data: T[];
+  table: TableType<T>;
 };
 
 const DataTable = <T,>(props: DataTableProps<T>) => {
-  const { tableColumns, data } = props;
+  const { table } = props;
   return (
     <Table>
       <TableHeader>
-        <TableRow className="border-b-0 table-header-box-shadow">
-          {tableColumns.map((column) => (
-            <TableHead key={column.key as string}>
-              {column.sortable !== false ? (
-                <TableSortHeader title={column.label} />
-              ) : (
-                column.label
-              )}
-            </TableHead>
-          ))}
-        </TableRow>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow
+            className="border-b-0 table-header-box-shadow"
+            key={headerGroup.id}
+          >
+            {headerGroup.headers.map((header) => (
+              <TableHead key={header.id}>
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+              </TableHead>
+            ))}
+          </TableRow>
+        ))}
       </TableHeader>
       <TableBody>
-        {data.map((item, index) => {
-          return (
-            <TableRow key={index}>
-              {tableColumns.map((column) => (
-                <TableCell key={`${index}_${column.key as string}`}>
-                  {String(item[column.key as keyof typeof item])}
-                </TableCell>
-              ))}
-            </TableRow>
-          );
-        })}
+        {table.getRowModel().rows.map((row) => (
+          <TableRow key={row.id}>
+            {row.getVisibleCells().map((cell) => (
+              <TableCell key={cell.id}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );

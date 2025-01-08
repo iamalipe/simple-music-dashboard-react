@@ -2,29 +2,53 @@
 import { createFileRoute, getRouteApi } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 
-import TableFooter from "@/components/data-table/table-footer";
+// import TableFooter from "@/components/data-table/table-footer";
 
 import ActionControls from "./-action-controls";
-import { useVisibleColumns } from "@/store/use-columns-view-store";
 import DataTable from "@/components/data-table/data-table";
 import { paginationZodSchema } from "@/lib/generic-validation";
+import tableColumns from "./-table-columns";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import useTableColumnsVisibilityStore, {
+  useTableVisibleColumns,
+} from "@/store/use-table-columns-visibility-store";
+import usePagination from "@/hooks/usePagination";
+import TableFooter from "@/components/data-table/table-footer";
 
 const GenreRoute = () => {
   const routeApi = getRouteApi("/genre/");
   const routeData = routeApi.useLoaderData();
 
-  // const [tableSort, setTableSort] = useState<TableSort<GenreType>>({
-  //   orderBy: "createdAt",
-  //   order: "desc",
-  // });
+  const tableVisibleColumns = useTableVisibleColumns("genre");
+  const toggleTableVisibility = useTableColumnsVisibilityStore(
+    (state) => state.toggleTableVisibility
+  );
 
-  const tableColumns = useVisibleColumns("genre");
+  const pagination = usePagination({
+    initialPageSize: routeData.pagination.limit,
+    initialPageIndex: routeData.pagination.page,
+  });
+
+  const table = useReactTable({
+    data: routeData?.data,
+    columns: tableColumns,
+    state: {
+      columnVisibility: tableVisibleColumns,
+      pagination: pagination.state,
+    },
+    manualPagination: true,
+    rowCount: routeData.pagination.total,
+    onPaginationChange: pagination.setPagination,
+    onColumnVisibilityChange: (updater) =>
+      toggleTableVisibility("genre", updater),
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
     <main className="flex-1 overflow-hidden flex flex-col p-2 md:p-4 gap-2 md:gap-4">
-      <ActionControls tableKey="genre" />
-      <DataTable tableColumns={tableColumns} data={routeData?.data} />
-      <TableFooter pagination={routeData?.pagination} routeFrom="/genre" />
+      <ActionControls table={table} />
+      <DataTable table={table} />
+      <TableFooter table={table} />
     </main>
   );
 };

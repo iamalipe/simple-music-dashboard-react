@@ -1,32 +1,33 @@
-import { GenreType } from "@/api/genre-api";
-import { TableColumns } from "@/types/table-type";
+import { createColumnHelper } from "@tanstack/react-table";
 
-const tableColumns: TableColumns<GenreType>[] = [
-  {
-    key: "name",
-    label: "Name",
-  },
-  {
-    key: "originYear",
-    label: "Origin year",
-  },
-  {
-    key: "description",
-    label: "Description",
-  },
-  {
-    key: "popularInCountry",
-    label: "Popular in country",
-  },
-  {
-    key: "createdAt",
-    label: "Created at",
-  },
-  {
-    key: "updatedAt",
-    label: "Updated at",
-    toggleVisibility: false,
-  },
+import { GenreType } from "@/api/genre-api";
+
+export const columnHelper = createColumnHelper<GenreType>();
+
+const tableColumns = [
+  columnHelper.accessor("name", {
+    header: () => "Name",
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("originYear", {
+    header: () => "Origin year",
+    cell: (info) => info.renderValue(),
+  }),
+  columnHelper.accessor("description", {
+    header: "Description",
+    cell: (info) => info.renderValue(),
+    // footer: (info) => info.column.id,
+  }),
+  columnHelper.accessor("popularInCountry", {
+    header: "Popular in country",
+    cell: (info) => info.renderValue(),
+    // footer: (info) => info.column.id,
+  }),
+  columnHelper.accessor("createdAt", {
+    header: "CreatedAt",
+    cell: (info) => info.renderValue(),
+    // footer: (info) => info.column.id,
+  }),
 ];
 
 export default tableColumns;

@@ -1,44 +1,74 @@
-import { LinkProps } from "@tanstack/react-router";
+import { Table as TableType } from "@tanstack/react-table";
 
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
-  PaginationRouterLink,
 } from "@/components/ui/pagination";
-import { generatePaginationLinks } from "@/lib/table-utils";
-import { ApiPaginationReturn } from "@/types/generic-type";
+import { Button } from "../ui/button";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 
-export type TablePaginationProps = {
-  pagination: ApiPaginationReturn;
-  routeFrom: LinkProps["from"];
+export type TablePaginationProps<T> = {
+  table: TableType<T>;
 };
-const TablePagination = (props: TablePaginationProps) => {
-  const { pagination, routeFrom } = props;
-
-  const totalPages = Math.ceil(pagination.total / pagination.limit);
-  const currentPage = pagination.page;
-  const paginationLinks = generatePaginationLinks(currentPage, totalPages);
+const TablePagination = <T,>(props: TablePaginationProps<T>) => {
+  const { table } = props;
 
   return (
     <Pagination>
       <PaginationContent>
-        {paginationLinks.map((link, index) => (
-          <PaginationItem key={index}>
-            {link.ellipsis ? (
-              <PaginationEllipsis />
-            ) : (
-              <PaginationRouterLink
-                isActive={link.active}
-                from={routeFrom}
-                search={(prev) => ({ ...prev, page: link.page })}
-              >
-                {link.page}
-              </PaginationRouterLink>
-            )}
-          </PaginationItem>
-        ))}
+        <PaginationItem>
+          <Button
+            size="icon"
+            variant="outline"
+            title="Go to first page"
+            disabled={!table.getCanPreviousPage()}
+            onClick={() => table.setPageIndex(0)}
+          >
+            <ChevronsLeft className="h-4 w-4" />
+          </Button>
+        </PaginationItem>
+        <PaginationItem>
+          <Button
+            size="icon"
+            variant="outline"
+            title="Go to previous page"
+            disabled={!table.getCanPreviousPage()}
+            onClick={() => table.previousPage()}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+        </PaginationItem>
+        <PaginationItem className="px-3">
+          {table.getState().pagination.pageIndex + 1}
+        </PaginationItem>
+        <PaginationItem>
+          <Button
+            size="icon"
+            variant="outline"
+            title="Go to next page"
+            disabled={!table.getCanNextPage()}
+            onClick={() => table.nextPage()}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </PaginationItem>
+        <PaginationItem>
+          <Button
+            size="icon"
+            variant="outline"
+            title="Go to last page"
+            disabled={!table.getCanNextPage()}
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          >
+            <ChevronsRight className="h-4 w-4" />
+          </Button>
+        </PaginationItem>
       </PaginationContent>
     </Pagination>
   );

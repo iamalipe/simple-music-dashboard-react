@@ -8,7 +8,9 @@ type UsePaginationProps = {
 };
 
 const usePagination = (props: UsePaginationProps) => {
-  const initialPageIndex = props.initialPageIndex ?? 1;
+  const initialPageIndex = props.initialPageIndex
+    ? props.initialPageIndex - 1
+    : 0;
   const initialPageSize = props.initialPageSize ?? 10;
 
   const onChange = props.onChange;
@@ -31,7 +33,7 @@ const usePagination = (props: UsePaginationProps) => {
     navigate({
       search: {
         limit: pagination.pageSize,
-        page: pagination.pageIndex,
+        page: pagination.pageIndex + 1,
       },
     });
   }, [pagination, onChange, navigate]);

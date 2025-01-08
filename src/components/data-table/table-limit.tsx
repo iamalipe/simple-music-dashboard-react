@@ -1,6 +1,5 @@
-import { useNavigate } from "@tanstack/react-router";
+import { Table as TableType } from "@tanstack/react-table";
 
-import { ApiPaginationReturn } from "@/types/generic-type";
 import {
   Select,
   SelectContent,
@@ -9,22 +8,15 @@ import {
   SelectValue,
 } from "../ui/select";
 
-export type TableLimitProps = {
-  pagination: ApiPaginationReturn;
+export type TableLimitProps<T> = {
+  table: TableType<T>;
+  limits?: number[];
 };
-const TableLimit = (props: TableLimitProps) => {
-  const { pagination } = props;
+const TableLimit = <T,>(props: TableLimitProps<T>) => {
+  const { table } = props;
+  const limits = props.limits || [10, 25, 50, 100];
 
-  const navigate = useNavigate({ from: "/genre" });
-
-  const onPageSizeChange = (value: number) => {
-    navigate({
-      search: {
-        limit: value,
-        page: 1,
-      },
-    });
-  };
+  const pageSize = table.getState().pagination.pageSize;
 
   return (
     <div className="flex items-center gap-3">
@@ -34,25 +26,18 @@ const TableLimit = (props: TableLimitProps) => {
         Page
       </span>
       <Select
-        value={`${pagination.limit}`}
-        onValueChange={(value) => onPageSizeChange(Number(value))}
+        value={`${pageSize}`}
+        onValueChange={(value) => table.setPageSize(Number(value))}
       >
         <SelectTrigger className="w-[80px]">
-          <SelectValue placeholder={`${pagination.limit}`} />
+          <SelectValue placeholder={`${pageSize}`} />
         </SelectTrigger>
         <SelectContent side="top">
-          <SelectItem key={"10"} value={`10`}>
-            10
-          </SelectItem>
-          <SelectItem key={"25"} value={`25`}>
-            25
-          </SelectItem>
-          <SelectItem key={"50"} value={`50`}>
-            50
-          </SelectItem>
-          <SelectItem key={"100"} value={`100`}>
-            100
-          </SelectItem>
+          {limits.map((limit, index) => (
+            <SelectItem key={`${index}_${limit}`} value={`${limit}`}>
+              {limit}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>

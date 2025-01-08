@@ -1,34 +1,10 @@
-import { ArtistType } from "@/api/artist-api";
-import { TableColumns } from "@/types/table-type";
 import { createColumnHelper } from "@tanstack/react-table";
 
-const tableColumns: TableColumns<ArtistType>[] = [
-  {
-    key: "name",
-    label: "Name",
-  },
-  {
-    key: "bio",
-    label: "bio",
-  },
-  {
-    key: "imageUrl",
-    label: "imageUrl",
-  },
-  {
-    key: "createdAt",
-    label: "Created at",
-  },
-  {
-    key: "updatedAt",
-    label: "Updated at",
-    toggleVisibility: false,
-  },
-];
+import { ArtistType } from "@/api/artist-api";
 
-const columnHelper = createColumnHelper<ArtistType>();
+export const columnHelper = createColumnHelper<ArtistType>();
 
-export const columns = [
+const tableColumns = [
   columnHelper.accessor("name", {
     header: () => "Name",
     cell: (info) => info.getValue(),
