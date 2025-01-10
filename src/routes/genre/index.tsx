@@ -1,8 +1,5 @@
-// import { useState } from "react";
 import { createFileRoute, getRouteApi } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
-
-// import TableFooter from "@/components/data-table/table-footer";
 
 import ActionControls from "./-action-controls";
 import DataTable from "@/components/data-table/data-table";
@@ -14,6 +11,7 @@ import useTableColumnsVisibilityStore, {
 } from "@/store/use-table-columns-visibility-store";
 import usePagination from "@/hooks/usePagination";
 import TableFooter from "@/components/data-table/table-footer";
+import useSort from "@/hooks/useSort";
 
 const GenreRoute = () => {
   const routeApi = getRouteApi("/genre/");
@@ -27,6 +25,12 @@ const GenreRoute = () => {
   const pagination = usePagination({
     initialPageSize: routeData.pagination.limit,
     initialPageIndex: routeData.pagination.page,
+    routeFrom: "/genre",
+  });
+
+  const sort = useSort({
+    initialSort: [],
+    routeFrom: "/artist",
   });
 
   const table = useReactTable({
@@ -35,10 +39,13 @@ const GenreRoute = () => {
     state: {
       columnVisibility: tableVisibleColumns,
       pagination: pagination.state,
+      sorting: sort.state,
     },
     manualPagination: true,
+    manualSorting: true,
     rowCount: routeData.pagination.total,
     onPaginationChange: pagination.setPagination,
+    onSortingChange: sort.setSorting,
     onColumnVisibilityChange: (updater) =>
       toggleTableVisibility("genre", updater),
     getCoreRowModel: getCoreRowModel(),

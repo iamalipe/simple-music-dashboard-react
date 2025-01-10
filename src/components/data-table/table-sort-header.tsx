@@ -9,13 +9,18 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { Header } from "@tanstack/react-table";
 
-export type TableSortHeaderProps = React.HTMLAttributes<HTMLDivElement> & {
-  title: string;
+export type TableSortHeaderProps<T> = React.HTMLAttributes<HTMLDivElement> & {
+  headerTitle?: React.ReactNode;
+  tableHeader: Header<T, unknown>;
 };
 
-const TableSortHeader = (props: TableSortHeaderProps) => {
-  const { className, title } = props;
+const TableSortHeader = <T,>(props: TableSortHeaderProps<T>) => {
+  const { className, headerTitle, tableHeader } = props;
+
+  const sorted = tableHeader.column.getIsSorted();
+
   return (
     <div className={cn("flex items-center space-x-2", className)}>
       <DropdownMenu>
@@ -25,24 +30,53 @@ const TableSortHeader = (props: TableSortHeaderProps) => {
             size="sm"
             className="-ml-3 h-8 data-[state=open]:bg-accent"
           >
-            <span>{title}</span>
-            <ChevronsUpDown />
-            {/* <ArrowDown /> */}
-            {/* <ArrowUp /> */}
+            <span>{headerTitle}</span>
+            {sorted === "asc" ? (
+              <ArrowUp />
+            ) : sorted === "desc" ? (
+              <ArrowDown />
+            ) : (
+              <ChevronsUpDown />
+            )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
-          <DropdownMenuItem>
-            <ArrowUp className="h-3.5 w-3.5 text-muted-foreground/70" />
+          <DropdownMenuItem
+            isTableHeader
+            className={cn({ "text-primary": sorted === "asc" })}
+            onClick={() =>
+              sorted === "asc"
+                ? tableHeader.column.clearSorting()
+                : tableHeader.column.toggleSorting(false)
+            }
+          >
+            <ArrowUp
+              className={cn("h-3.5 w-3.5 text-muted-foreground/70", {
+                "text-primary": sorted === "asc",
+              })}
+            />
             Asc
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            {/* <DropdownMenuItem onClick={() => column.toggleSorting(true)}> */}
-            <ArrowDown className="h-3.5 w-3.5 text-muted-foreground/70" />
+          <DropdownMenuItem
+            isTableHeader
+            className={cn({ "text-primary": sorted === "desc" })}
+            onClick={() =>
+              sorted === "desc"
+                ? tableHeader.column.clearSorting()
+                : tableHeader.column.toggleSorting(true)
+            }
+          >
+            <ArrowDown
+              className={cn("h-3.5 w-3.5 text-muted-foreground/70", {
+                "text-primary": sorted === "desc",
+              })}
+            />
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => tableHeader.column.toggleVisibility(false)}
+          >
             <EyeOff className="h-3.5 w-3.5 text-muted-foreground/70" />
             Hide
           </DropdownMenuItem>

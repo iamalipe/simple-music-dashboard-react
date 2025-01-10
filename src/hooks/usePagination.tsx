@@ -1,10 +1,12 @@
-import { useNavigate } from "@tanstack/react-router";
+import { LinkProps, useNavigate } from "@tanstack/react-router";
+import { PaginationState } from "@tanstack/react-table";
 import { useState, useEffect, useRef } from "react";
 
 type UsePaginationProps = {
   initialPageSize?: number;
   initialPageIndex?: number;
-  onChange?: (data: { pageSize: number; pageIndex: number }) => void;
+  onChange?: (data: PaginationState) => void;
+  routeFrom: LinkProps["from"];
 };
 
 const usePagination = (props: UsePaginationProps) => {
@@ -15,9 +17,9 @@ const usePagination = (props: UsePaginationProps) => {
 
   const onChange = props.onChange;
 
-  const navigate = useNavigate({ from: "/artist" });
+  const navigate = useNavigate({ from: props.routeFrom });
 
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<PaginationState>({
     pageSize: initialPageSize,
     pageIndex: initialPageIndex,
   });

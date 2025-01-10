@@ -12,6 +12,7 @@ import ActionControls from "./-action-controls";
 import usePagination from "@/hooks/usePagination";
 import DataTable from "@/components/data-table/data-table";
 import TableFooter from "@/components/data-table/table-footer";
+import useSort from "@/hooks/useSort";
 
 const ArtistRoute = () => {
   const routeApi = getRouteApi("/artist/");
@@ -24,6 +25,12 @@ const ArtistRoute = () => {
   const pagination = usePagination({
     initialPageSize: routeData.pagination.limit,
     initialPageIndex: routeData.pagination.page,
+    routeFrom: "/artist",
+  });
+
+  const sort = useSort({
+    initialSort: [],
+    routeFrom: "/artist",
   });
 
   const table = useReactTable({
@@ -32,12 +39,15 @@ const ArtistRoute = () => {
     state: {
       columnVisibility: tableVisibleColumns,
       pagination: pagination.state,
+      sorting: sort.state,
     },
     manualPagination: true,
+    manualSorting: true,
     rowCount: routeData.pagination.total,
     onPaginationChange: pagination.setPagination,
     onColumnVisibilityChange: (updater) =>
       toggleTableVisibility("artist", updater),
+    onSortingChange: sort.setSorting,
     getCoreRowModel: getCoreRowModel(),
   });
 

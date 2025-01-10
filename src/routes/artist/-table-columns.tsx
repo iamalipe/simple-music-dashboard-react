@@ -16,6 +16,7 @@ const tableColumns = [
   columnHelper.accessor("imageUrl", {
     header: "Image Url",
     cell: (info) => info.renderValue(),
+    enableSorting: false,
     // footer: (info) => info.column.id,
   }),
   columnHelper.accessor("createdAt", {

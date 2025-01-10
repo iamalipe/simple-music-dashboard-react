@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 // import { TableColumns } from "@/types/table-type";
-// import TableSortHeader from "./table-sort-header";
+import TableSortHeader from "./table-sort-header";
 
 export type DataTableProps<T> = {
   table: TableType<T>;
@@ -26,16 +26,30 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
             className="border-b-0 table-header-box-shadow"
             key={headerGroup.id}
           >
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-              </TableHead>
-            ))}
+            {headerGroup.headers.map((header) => {
+              const renderData = header.isPlaceholder
+                ? null
+                : flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  );
+
+              return (
+                <TableHead
+                  onClick={header.column.getToggleSortingHandler}
+                  key={header.id}
+                >
+                  {header.column.getCanSort() ? (
+                    <TableSortHeader
+                      headerTitle={renderData}
+                      tableHeader={header}
+                    />
+                  ) : (
+                    renderData
+                  )}
+                </TableHead>
+              );
+            })}
           </TableRow>
         ))}
       </TableHeader>
