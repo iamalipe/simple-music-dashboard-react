@@ -20,6 +20,7 @@ const ColumnsViewControls = <T,>(props: ColumnsViewControlsProps<T>) => {
   const { table } = props;
   const isMobile = useIsMobile();
 
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,16 +32,22 @@ const ColumnsViewControls = <T,>(props: ColumnsViewControlsProps<T>) => {
       <DropdownMenuContent align="end" className="w-[150px]">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {table.getAllLeafColumns().map((column) => (
-          <DropdownMenuCheckboxItem
-            key={column.id}
-            className="capitalize"
-            checked={column.getIsVisible()}
-            onCheckedChange={(checked) => column.toggleVisibility(checked)}
-          >
-            {column.id}
-          </DropdownMenuCheckboxItem>
-        ))}
+        {table
+          .getAllColumns()
+          .filter(
+            (column) =>
+              typeof column.accessorFn !== "undefined" && column.getCanHide()
+          )
+          .map((column) => (
+            <DropdownMenuCheckboxItem
+              key={column.id}
+              className="capitalize"
+              checked={column.getIsVisible()}
+              onCheckedChange={(checked) => column.toggleVisibility(checked)}
+            >
+              {column.id}
+            </DropdownMenuCheckboxItem>
+          ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

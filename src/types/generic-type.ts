@@ -1,7 +1,7 @@
 // generic-type.ts
 export type ApiValidationError = { message: string; path: string };
 
-export type ApiSortReturn = { orderBy: string; order: string };
+export type ApiSortReturn = { orderBy: string; order: "asc" | "desc" }[];
 
 export type ApiPaginationReturn = {
   page: number;
@@ -28,10 +28,9 @@ export type ApiNormalResponse<T> = {
   data: T;
 };
 
-export type ApiQueryParams<T> = {
+export type ApiQueryParams = {
   page?: number; // Optional page number
   limit?: number; // Optional limit per page
-  orderBy?: keyof T | string; // Can be a key of T or any other string
-  order?: "asc" | "desc"; // Optional order direction
+  sort?: ApiSortReturn;
   [key: string]: unknown; // Additional key-value pairs
 };

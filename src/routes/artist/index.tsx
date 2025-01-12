@@ -3,7 +3,7 @@ import { zodValidator } from "@tanstack/zod-adapter";
 
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 
-import { paginationZodSchema } from "@/lib/generic-validation";
+import { getAllZodSchema } from "@/lib/generic-validation";
 import tableColumns from "./-table-columns";
 import useTableColumnsVisibilityStore, {
   useTableVisibleColumns,
@@ -29,7 +29,7 @@ const ArtistRoute = () => {
   });
 
   const sort = useSort({
-    initialSort: [],
+    initialSort: routeData.sort,
     routeFrom: "/artist",
   });
 
@@ -62,9 +62,9 @@ const ArtistRoute = () => {
 
 export const Route = createFileRoute("/artist/")({
   component: ArtistRoute,
-  loaderDeps: ({ search: { page, limit } }) => ({ page, limit }),
+  loaderDeps: ({ search: { sort, limit, page } }) => ({ sort, limit, page }),
   loader: ({ context: { apiQuery }, deps: deps }) =>
     apiQuery.artist.getAll(deps),
-  validateSearch: zodValidator(paginationZodSchema),
   pendingComponent: () => <div>Loading...</div>,
+  validateSearch: zodValidator(getAllZodSchema),
 });

@@ -1,6 +1,5 @@
 // generic-crud.ts
 
-import queryString from "query-string";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import {
   ApiErrorResponse,
@@ -8,22 +7,18 @@ import {
   ApiNormalResponse,
   ApiQueryParams,
 } from "@/types/generic-type";
+import { qString } from "./utils";
 
 export const genericCRUD = <T, U = T>(
   axiosInstance: AxiosInstance,
   endpoint: string
 ) => ({
   getAll: async (
-    params?: ApiQueryParams<T>,
+    params?: ApiQueryParams,
     config?: AxiosRequestConfig
   ): Promise<ApiGetAllResponse<T>> => {
     try {
-      const stringifiedParams = params
-        ? queryString.stringify(params, {
-            skipEmptyString: true,
-            skipNull: true,
-          })
-        : "";
+      const stringifiedParams = params ? qString(params) : "";
       const response = await axiosInstance.get<ApiGetAllResponse<T>>(
         `${endpoint}?${stringifiedParams}`,
         config

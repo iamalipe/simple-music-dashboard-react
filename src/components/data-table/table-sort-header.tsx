@@ -73,13 +73,18 @@ const TableSortHeader = <T,>(props: TableSortHeaderProps<T>) => {
             />
             Desc
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => tableHeader.column.toggleVisibility(false)}
-          >
-            <EyeOff className="h-3.5 w-3.5 text-muted-foreground/70" />
-            Hide
-          </DropdownMenuItem>
+          {tableHeader.column.getCanHide() && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                isTableHeader
+                onClick={() => tableHeader.column.toggleVisibility(false)}
+              >
+                <EyeOff className="h-3.5 w-3.5 text-muted-foreground/70" />
+                Hide
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

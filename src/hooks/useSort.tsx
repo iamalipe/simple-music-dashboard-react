@@ -1,15 +1,20 @@
+import { ApiSortReturn } from "@/types/generic-type";
 import { LinkProps, useNavigate } from "@tanstack/react-router";
 import { SortingState } from "@tanstack/react-table";
 import { useState, useEffect, useRef } from "react";
 
 type UseSortProps = {
-  initialSort?: SortingState;
+  initialSort?: ApiSortReturn;
   onChange?: (data: SortingState) => void;
   routeFrom: LinkProps["from"];
 };
 
 const useSort = (props: UseSortProps) => {
-  const initialSort = props.initialSort ?? [];
+  const initialSort =
+    props.initialSort?.map((s) => ({
+      id: s.orderBy,
+      desc: s.order === "desc",
+    })) ?? [];
 
   const onChange = props.onChange;
 
@@ -25,14 +30,17 @@ const useSort = (props: UseSortProps) => {
       return;
     }
     if (onChange) onChange(sorting);
-    console.log("sorting", sorting);
-
-    // navigate({
-    //   search: {
-    //     limit: pagination.pageSize,
-    //     page: pagination.pageIndex + 1,
-    //   },
-    // });
+    const sort = sorting.map((s) => ({
+      orderBy: s.id,
+      order: s.desc ? "desc" : "asc",
+    }));
+    if (sort.length < 1) return;
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        sort: sort,
+      }),
+    });
   }, [sorting, onChange, navigate]);
 
   return { state: sorting, setSorting };

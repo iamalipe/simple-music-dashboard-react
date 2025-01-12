@@ -33,10 +33,11 @@ const usePagination = (props: UsePaginationProps) => {
     }
     if (onChange) onChange(pagination);
     navigate({
-      search: {
+      search: (prev) => ({
+        ...prev,
         limit: pagination.pageSize,
         page: pagination.pageIndex + 1,
-      },
+      }),
     });
   }, [pagination, onChange, navigate]);
 
