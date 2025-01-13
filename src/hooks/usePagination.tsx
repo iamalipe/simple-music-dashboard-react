@@ -1,5 +1,5 @@
-import { LinkProps, useNavigate } from "@tanstack/react-router";
-import { PaginationState } from "@tanstack/react-table";
+import { type LinkProps, useNavigate } from "@tanstack/react-router";
+import type { PaginationState } from "@tanstack/react-table";
 import { useState, useEffect, useRef } from "react";
 
 type UsePaginationProps = {

@@ -1,7 +1,7 @@
 // generic-crud.ts
 
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import {
+import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
+import type {
   ApiErrorResponse,
   ApiGetAllResponse,
   ApiNormalResponse,

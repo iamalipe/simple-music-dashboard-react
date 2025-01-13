@@ -63,8 +63,7 @@ const ArtistRoute = () => {
 export const Route = createFileRoute("/artist/")({
   component: ArtistRoute,
   loaderDeps: ({ search: { sort, limit, page } }) => ({ sort, limit, page }),
-  loader: ({ context: { apiQuery }, deps: deps }) =>
-    apiQuery.artist.getAll(deps),
+  loader: ({ context: { apiQuery }, deps }) => apiQuery.artist.getAll(deps),
   pendingComponent: () => <div>Loading...</div>,
   validateSearch: zodValidator(getAllZodSchema),
 });

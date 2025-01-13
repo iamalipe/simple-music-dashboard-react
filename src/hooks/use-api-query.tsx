@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 import "@tanstack/react-query";
 
-import { ApiErrorResponse } from "@/types/generic-type";
+import type { ApiErrorResponse } from "@/types/generic-type";
 
 // import all api-query
 import { genreQuery } from "./api-query/genre-query";

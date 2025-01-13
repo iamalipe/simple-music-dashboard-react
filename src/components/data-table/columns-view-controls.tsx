@@ -1,5 +1,5 @@
 import { Grid2x2 } from "lucide-react";
-import { Table as TableType } from "@tanstack/react-table";
+import type { Table as TableType } from "@tanstack/react-table";
 
 import {
   DropdownMenu,

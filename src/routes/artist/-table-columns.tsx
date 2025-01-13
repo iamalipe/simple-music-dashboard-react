@@ -1,6 +1,6 @@
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import dayjs from "dayjs";
-import { ArtistType } from "@/api/artist-api";
+import type { ArtistType } from "@/api/artist-api";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LocalizedFormat from "dayjs/plugin/LocalizedFormat";

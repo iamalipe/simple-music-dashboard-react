@@ -9,7 +9,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import { Header } from "@tanstack/react-table";
+import type { Header } from "@tanstack/react-table";
 
 export type TableSortHeaderProps<T> = React.HTMLAttributes<HTMLDivElement> & {
   headerTitle?: React.ReactNode;

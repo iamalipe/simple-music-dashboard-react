@@ -1,6 +1,6 @@
-import { ApiSortReturn } from "@/types/generic-type";
-import { LinkProps, useNavigate } from "@tanstack/react-router";
-import { SortingState } from "@tanstack/react-table";
+import type { ApiSortReturn } from "@/types/generic-type";
+import { type LinkProps, useNavigate } from "@tanstack/react-router";
+import type { SortingState } from "@tanstack/react-table";
 import { useState, useEffect, useRef } from "react";
 
 type UseSortProps = {

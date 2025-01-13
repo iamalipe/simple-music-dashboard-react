@@ -1,4 +1,4 @@
-import { Updater, VisibilityState } from "@tanstack/react-table";
+import type { Updater, VisibilityState } from "@tanstack/react-table";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

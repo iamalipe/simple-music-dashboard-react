@@ -1,4 +1,4 @@
-import { Table as TableType } from "@tanstack/react-table";
+import type { Table as TableType } from "@tanstack/react-table";
 
 import {
   Pagination,

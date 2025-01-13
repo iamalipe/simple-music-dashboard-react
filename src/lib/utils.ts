@@ -23,7 +23,8 @@ export function sanitizeObject(obj: unknown): unknown {
     return obj
       .map(sanitizeObject) // Recursively clean array elements
       .filter((item) => item !== undefined && item !== null && item !== ""); // Remove unwanted values from array
-  } else if (typeof obj === "object" && obj !== null) {
+  }
+  if (typeof obj === "object" && obj !== null) {
     const cleanedObject: { [key: string]: unknown } = {};
 
     for (const [key, value] of Object.entries(obj)) {

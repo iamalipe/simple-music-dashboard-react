@@ -1,4 +1,4 @@
-import { Table as TableType } from "@tanstack/react-table";
+import type { Table as TableType } from "@tanstack/react-table";
 
 import ColumnsViewControls from "@/components/data-table/columns-view-controls";
 import { Button } from "@/components/ui/button";
