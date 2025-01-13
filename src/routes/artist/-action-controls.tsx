@@ -18,8 +18,7 @@ const ActionControls = <T,>(props: ActionControlsProps<T>) => {
         <SidebarTrigger variant="outline" />
       </div>
       <div className="flex gap-2 md:gap-4">
-        <Button>Right Btn 1</Button>
-        <Button>Right Btn </Button>
+        <Button>Add</Button>
         <ColumnsViewControls table={table} />
       </div>
     </div>

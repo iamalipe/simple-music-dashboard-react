@@ -45,7 +45,7 @@ const ColumnsViewControls = <T,>(props: ColumnsViewControlsProps<T>) => {
               checked={column.getIsVisible()}
               onCheckedChange={(checked) => column.toggleVisibility(checked)}
             >
-              {column.id}
+              {column.columnDef.meta?.visibilityLabel || column.id}
             </DropdownMenuCheckboxItem>
           ))}
       </DropdownMenuContent>

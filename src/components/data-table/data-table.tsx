@@ -20,7 +20,7 @@ const DataTable = <T,>(props: DataTableProps<T>) => {
   const { table } = props;
   return (
     <Table>
-      <TableHeader>
+      <TableHeader className="z-10">
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow
             className="border-b-0 table-header-box-shadow"

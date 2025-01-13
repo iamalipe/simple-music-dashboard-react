@@ -14,7 +14,7 @@ const TableFooter = <T,>(props: TableFooterProps<T>) => {
       <div className="text-xs text-muted-foreground flex flex-col">
         <span>
           Selected: {table.getSelectedRowModel().rows.length} of{" "}
-          {table.getRowCount()}
+          {table.getState().pagination.pageSize}
         </span>
         <span>
           Total : {table.getRowCount()} • Page:{" "}
