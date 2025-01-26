@@ -16,6 +16,7 @@ import useSort from "@/hooks/useSort";
 import LoadingElement from "@/components/general/loading-element";
 import ErrorPage from "@/components/general/error-page";
 import PageNotFound from "@/components/general/page-not-found";
+import PageBreadcrumb from "@/components/general/page-breadcrumb";
 
 const ArtistRoute = () => {
   const routeApi = getRouteApi("/artist/");
@@ -56,6 +57,7 @@ const ArtistRoute = () => {
 
   return (
     <main className="flex-1 overflow-hidden flex flex-col p-2 md:p-4 gap-2 md:gap-4">
+      <PageBreadcrumb />
       <ActionControls table={table} />
       <DataTable table={table} />
       <TableFooter table={table} />

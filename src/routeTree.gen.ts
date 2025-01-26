@@ -11,14 +11,21 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ArtistRouteImport } from './routes/artist/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as TestIndexImport } from './routes/test/index'
 import { Route as GenreIndexImport } from './routes/genre/index'
 import { Route as ArtistIndexImport } from './routes/artist/index'
-import { Route as ArtistNewIndexImport } from './routes/artist/new/index'
-import { Route as ArtistIdIndexImport } from './routes/artist/$id/index'
+import { Route as ArtistNewImport } from './routes/artist/new'
+import { Route as ArtistIdImport } from './routes/artist/$id'
 
 // Create/Update Routes
+
+const ArtistRouteRoute = ArtistRouteImport.update({
+  id: '/artist',
+  path: '/artist',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -39,21 +46,21 @@ const GenreIndexRoute = GenreIndexImport.update({
 } as any)
 
 const ArtistIndexRoute = ArtistIndexImport.update({
-  id: '/artist/',
-  path: '/artist/',
-  getParentRoute: () => rootRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => ArtistRouteRoute,
 } as any)
 
-const ArtistNewIndexRoute = ArtistNewIndexImport.update({
-  id: '/artist/new/',
-  path: '/artist/new/',
-  getParentRoute: () => rootRoute,
+const ArtistNewRoute = ArtistNewImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => ArtistRouteRoute,
 } as any)
 
-const ArtistIdIndexRoute = ArtistIdIndexImport.update({
-  id: '/artist/$id/',
-  path: '/artist/$id/',
-  getParentRoute: () => rootRoute,
+const ArtistIdRoute = ArtistIdImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ArtistRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -67,12 +74,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/artist/': {
-      id: '/artist/'
+    '/artist': {
+      id: '/artist'
       path: '/artist'
       fullPath: '/artist'
-      preLoaderRoute: typeof ArtistIndexImport
+      preLoaderRoute: typeof ArtistRouteImport
       parentRoute: typeof rootRoute
+    }
+    '/artist/$id': {
+      id: '/artist/$id'
+      path: '/$id'
+      fullPath: '/artist/$id'
+      preLoaderRoute: typeof ArtistIdImport
+      parentRoute: typeof ArtistRouteImport
+    }
+    '/artist/new': {
+      id: '/artist/new'
+      path: '/new'
+      fullPath: '/artist/new'
+      preLoaderRoute: typeof ArtistNewImport
+      parentRoute: typeof ArtistRouteImport
+    }
+    '/artist/': {
+      id: '/artist/'
+      path: '/'
+      fullPath: '/artist/'
+      preLoaderRoute: typeof ArtistIndexImport
+      parentRoute: typeof ArtistRouteImport
     }
     '/genre/': {
       id: '/genre/'
@@ -88,51 +116,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestIndexImport
       parentRoute: typeof rootRoute
     }
-    '/artist/$id/': {
-      id: '/artist/$id/'
-      path: '/artist/$id'
-      fullPath: '/artist/$id'
-      preLoaderRoute: typeof ArtistIdIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/artist/new/': {
-      id: '/artist/new/'
-      path: '/artist/new'
-      fullPath: '/artist/new'
-      preLoaderRoute: typeof ArtistNewIndexImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
 // Create and export the route tree
 
+interface ArtistRouteRouteChildren {
+  ArtistIdRoute: typeof ArtistIdRoute
+  ArtistNewRoute: typeof ArtistNewRoute
+  ArtistIndexRoute: typeof ArtistIndexRoute
+}
+
+const ArtistRouteRouteChildren: ArtistRouteRouteChildren = {
+  ArtistIdRoute: ArtistIdRoute,
+  ArtistNewRoute: ArtistNewRoute,
+  ArtistIndexRoute: ArtistIndexRoute,
+}
+
+const ArtistRouteRouteWithChildren = ArtistRouteRoute._addFileChildren(
+  ArtistRouteRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/artist': typeof ArtistIndexRoute
+  '/artist': typeof ArtistRouteRouteWithChildren
+  '/artist/$id': typeof ArtistIdRoute
+  '/artist/new': typeof ArtistNewRoute
+  '/artist/': typeof ArtistIndexRoute
   '/genre': typeof GenreIndexRoute
   '/test': typeof TestIndexRoute
-  '/artist/$id': typeof ArtistIdIndexRoute
-  '/artist/new': typeof ArtistNewIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/artist/$id': typeof ArtistIdRoute
+  '/artist/new': typeof ArtistNewRoute
   '/artist': typeof ArtistIndexRoute
   '/genre': typeof GenreIndexRoute
   '/test': typeof TestIndexRoute
-  '/artist/$id': typeof ArtistIdIndexRoute
-  '/artist/new': typeof ArtistNewIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/artist': typeof ArtistRouteRouteWithChildren
+  '/artist/$id': typeof ArtistIdRoute
+  '/artist/new': typeof ArtistNewRoute
   '/artist/': typeof ArtistIndexRoute
   '/genre/': typeof GenreIndexRoute
   '/test/': typeof TestIndexRoute
-  '/artist/$id/': typeof ArtistIdIndexRoute
-  '/artist/new/': typeof ArtistNewIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -140,39 +172,37 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/artist'
-    | '/genre'
-    | '/test'
     | '/artist/$id'
     | '/artist/new'
+    | '/artist/'
+    | '/genre'
+    | '/test'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/artist' | '/genre' | '/test' | '/artist/$id' | '/artist/new'
+  to: '/' | '/artist/$id' | '/artist/new' | '/artist' | '/genre' | '/test'
   id:
     | '__root__'
     | '/'
+    | '/artist'
+    | '/artist/$id'
+    | '/artist/new'
     | '/artist/'
     | '/genre/'
     | '/test/'
-    | '/artist/$id/'
-    | '/artist/new/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ArtistIndexRoute: typeof ArtistIndexRoute
+  ArtistRouteRoute: typeof ArtistRouteRouteWithChildren
   GenreIndexRoute: typeof GenreIndexRoute
   TestIndexRoute: typeof TestIndexRoute
-  ArtistIdIndexRoute: typeof ArtistIdIndexRoute
-  ArtistNewIndexRoute: typeof ArtistNewIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ArtistIndexRoute: ArtistIndexRoute,
+  ArtistRouteRoute: ArtistRouteRouteWithChildren,
   GenreIndexRoute: GenreIndexRoute,
   TestIndexRoute: TestIndexRoute,
-  ArtistIdIndexRoute: ArtistIdIndexRoute,
-  ArtistNewIndexRoute: ArtistNewIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -186,30 +216,39 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/artist/",
+        "/artist",
         "/genre/",
-        "/test/",
-        "/artist/$id/",
-        "/artist/new/"
+        "/test/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/artist": {
+      "filePath": "artist/route.tsx",
+      "children": [
+        "/artist/$id",
+        "/artist/new",
+        "/artist/"
+      ]
+    },
+    "/artist/$id": {
+      "filePath": "artist/$id.tsx",
+      "parent": "/artist"
+    },
+    "/artist/new": {
+      "filePath": "artist/new.tsx",
+      "parent": "/artist"
+    },
     "/artist/": {
-      "filePath": "artist/index.tsx"
+      "filePath": "artist/index.tsx",
+      "parent": "/artist"
     },
     "/genre/": {
       "filePath": "genre/index.tsx"
     },
     "/test/": {
       "filePath": "test/index.tsx"
-    },
-    "/artist/$id/": {
-      "filePath": "artist/$id/index.tsx"
-    },
-    "/artist/new/": {
-      "filePath": "artist/new/index.tsx"
     }
   }
 }

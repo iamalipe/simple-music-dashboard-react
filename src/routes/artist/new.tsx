@@ -20,6 +20,7 @@ import LoadingElement from "@/components/general/loading-element";
 import ErrorPage from "@/components/general/error-page";
 import PageNotFound from "@/components/general/page-not-found";
 import { useToast } from "@/hooks/use-toast";
+import PageBreadcrumb from "@/components/general/page-breadcrumb";
 
 const formSchema = z.object({
   name: z.string().min(2).max(100),
@@ -54,8 +55,9 @@ function RouteComponent() {
 
   return (
     <main className="flex-1 overflow-hidden flex flex-col p-2 md:p-4 gap-2 md:gap-4">
+      <PageBreadcrumb />
       <div>
-        <h3 className="text-lg font-medium">Artist</h3>
+        <h3 className="text-lg font-medium">Artist Profile</h3>
         <p className="text-sm text-muted-foreground">
           Create your artist profile
         </p>
@@ -195,8 +197,11 @@ function RouteComponent() {
   );
 }
 
-export const Route = createFileRoute("/artist/new/")({
+export const Route = createFileRoute("/artist/new")({
   component: RouteComponent,
+  loader: () => ({
+    crumb: "New Artist",
+  }),
   errorComponent: ErrorPage,
   notFoundComponent: PageNotFound,
   pendingComponent: LoadingElement,

@@ -1,7 +1,16 @@
+import ErrorPage from "@/components/general/error-page";
+import LoadingElement from "@/components/general/loading-element";
+import PageNotFound from "@/components/general/page-not-found";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  errorComponent: ErrorPage,
+  notFoundComponent: PageNotFound,
+  pendingComponent: LoadingElement,
+  loader: () => ({
+    crumb: "Home",
+  }),
 });
 
 function Index() {

@@ -21,6 +21,7 @@ import LoadingElement from "@/components/general/loading-element";
 import ErrorPage from "@/components/general/error-page";
 import PageNotFound from "@/components/general/page-not-found";
 import { toast } from "@/hooks/use-toast";
+import PageBreadcrumb from "@/components/general/page-breadcrumb";
 
 const formSchema = z.object({
   name: z.string().min(2).max(100),
@@ -31,13 +32,14 @@ const formSchema = z.object({
 type FormSchemaType = z.infer<typeof formSchema>;
 
 function RouteComponent() {
-  const routeApi = getRouteApi("/artist/$id/");
+  const routeApi = getRouteApi("/artist/$id");
   const routeData = routeApi.useLoaderData();
+  const mainData = routeData.data.data;
 
   const defaultValues: Partial<FormSchemaType> = {
-    name: routeData.data.name,
-    bio: routeData.data.bio || undefined,
-    imageUrl: routeData.data.imageUrl || undefined,
+    name: mainData.name,
+    bio: mainData.bio || undefined,
+    imageUrl: mainData.imageUrl || undefined,
   };
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
@@ -46,7 +48,7 @@ function RouteComponent() {
   });
 
   const onSubmit = async (data: FormSchemaType) => {
-    apiQuery.artist.update({ id: routeData.data.id, data });
+    apiQuery.artist.update({ id: mainData.id, data });
     toast({
       title: "Artist updated",
       description: "Your artist has been updated successfully.",
@@ -55,11 +57,13 @@ function RouteComponent() {
 
   return (
     <main className="flex-1 overflow-hidden flex flex-col p-2 md:p-4 gap-2 md:gap-4">
+      <PageBreadcrumb />
       <div>
-        <h3 className="text-lg font-medium">Artist</h3>
-        <p className="text-sm text-muted-foreground">
+        <h3 className="text-lg font-medium">Artist Profile</h3>
+        <p className="text-sm text-muted-foreground">Id: {mainData.id}</p>
+        {/* <p className="text-sm text-muted-foreground">
           dasda your artist profile
-        </p>
+        </p> */}
       </div>
       <Separator />
       <Form {...form}>
@@ -196,10 +200,12 @@ function RouteComponent() {
   );
 }
 
-export const Route = createFileRoute("/artist/$id/")({
+export const Route = createFileRoute("/artist/$id")({
   component: RouteComponent,
-  loader: ({ context: { apiQuery }, params: { id } }) =>
-    apiQuery.artist.get(id),
+  loader: async ({ context: { apiQuery }, params: { id } }) => {
+    const data = await apiQuery.artist.get(id);
+    return { data, crumb: data.data.name };
+  },
   beforeLoad: ({ params }) => getOneZodSchema.parse(params),
   errorComponent: ErrorPage,
   notFoundComponent: PageNotFound,
