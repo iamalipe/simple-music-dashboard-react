@@ -13,6 +13,9 @@ import usePagination from "@/hooks/usePagination";
 import DataTable from "@/components/data-table/data-table";
 import TableFooter from "@/components/data-table/table-footer";
 import useSort from "@/hooks/useSort";
+import LoadingElement from "@/components/general/loading-element";
+import ErrorPage from "@/components/general/error-page";
+import PageNotFound from "@/components/general/page-not-found";
 
 const ArtistRoute = () => {
   const routeApi = getRouteApi("/artist/");
@@ -64,6 +67,8 @@ export const Route = createFileRoute("/artist/")({
   component: ArtistRoute,
   loaderDeps: ({ search: { sort, limit, page } }) => ({ sort, limit, page }),
   loader: ({ context: { apiQuery }, deps }) => apiQuery.artist.getAll(deps),
-  pendingComponent: () => <div>Loading...</div>,
   validateSearch: zodValidator(getAllZodSchema),
+  errorComponent: ErrorPage,
+  notFoundComponent: PageNotFound,
+  pendingComponent: LoadingElement,
 });

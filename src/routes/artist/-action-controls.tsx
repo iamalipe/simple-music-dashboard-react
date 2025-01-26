@@ -3,6 +3,7 @@ import type { Table as TableType } from "@tanstack/react-table";
 import ColumnsViewControls from "@/components/data-table/columns-view-controls";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Link } from "@tanstack/react-router";
 // import { qs, sanitizeObject } from "@/lib/utils";
 
 export type ActionControlsProps<T> = {
@@ -18,7 +19,9 @@ const ActionControls = <T,>(props: ActionControlsProps<T>) => {
         <SidebarTrigger variant="outline" />
       </div>
       <div className="flex gap-2 md:gap-4">
-        <Button>Add</Button>
+        <Button>
+          <Link to="/artist/new">Add</Link>
+        </Button>
         <ColumnsViewControls table={table} />
       </div>
     </div>

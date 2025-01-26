@@ -4,6 +4,7 @@ import type { ArtistType } from "@/api/artist-api";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LocalizedFormat from "dayjs/plugin/LocalizedFormat";
+import { Link } from "@tanstack/react-router";
 dayjs.extend(LocalizedFormat);
 
 const tableColumns: ColumnDef<ArtistType>[] = [
@@ -44,7 +45,13 @@ const tableColumns: ColumnDef<ArtistType>[] = [
           <AvatarImage src={info.row.original.imageUrl || ""} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-        <span>{info.getValue() as string}</span>
+        <Link
+          to="/artist/$id"
+          params={{ id: info.row.original.id }}
+          className="hover:underline"
+        >
+          {info.getValue() as string}
+        </Link>
       </div>
     ),
     enableHiding: false,

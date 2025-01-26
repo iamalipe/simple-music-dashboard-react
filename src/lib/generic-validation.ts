@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { mongoIdRegex } from "./utils";
 
 export const paginationZodSchema = z
   .object({
@@ -74,3 +75,7 @@ export const getAllZodSchema = z
     }
     return result;
   });
+
+export const getOneZodSchema = z.object({
+  id: z.string().regex(mongoIdRegex, "Invalid id"),
+});

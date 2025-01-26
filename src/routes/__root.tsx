@@ -8,12 +8,19 @@ import { AppSidebar } from "@/components/app-sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import type { ApiQuery } from "@/hooks/use-api-query";
 import type { ApiType } from "@/api/api";
+import PageNotFound from "@/components/general/page-not-found";
+import LoadingElement from "@/components/general/loading-element";
+import ErrorPage from "@/components/general/error-page";
+import { Toaster } from "@/components/ui/toaster";
 
 export const Route = createRootRouteWithContext<{
   apiQuery: ApiQuery;
   api: ApiType;
 }>()({
   component: PrivateLayout,
+  errorComponent: ErrorPage,
+  notFoundComponent: PageNotFound,
+  pendingComponent: LoadingElement,
 });
 
 function PrivateLayout() {
@@ -29,6 +36,7 @@ function PrivateLayout() {
         </div>
         <Footer />
       </div>
+      <Toaster />
       <ReactQueryDevtools initialIsOpen={false} />
       <TanStackRouterDevtools />
     </>

@@ -43,3 +43,8 @@ export function sanitizeObject(obj: unknown): unknown {
 
   return obj; // Return the value as-is if it's not an array or object
 }
+
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+export const mongoIdRegex = /^[0-9a-fA-F]{24}$/;
