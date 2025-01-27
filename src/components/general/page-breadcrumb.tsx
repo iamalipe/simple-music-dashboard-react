@@ -12,7 +12,6 @@ import { nanoid } from "nanoid";
 
 const PageBreadcrumb = () => {
   const matches = useMatches();
-  console.log("matches", matches);
 
   const matchesWithCrumbs = matches.filter((match) =>
     isMatch(match, "loaderData.crumb")
@@ -24,7 +23,6 @@ const PageBreadcrumb = () => {
       label: loaderData?.crumb,
     };
   });
-  console.log("items", items);
 
   return (
     <div>
