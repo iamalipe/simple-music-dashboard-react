@@ -14,7 +14,6 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as ArtistRouteImport } from './routes/artist/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as TestIndexImport } from './routes/test/index'
-import { Route as GenreIndexImport } from './routes/genre/index'
 import { Route as ArtistIndexImport } from './routes/artist/index'
 import { Route as ArtistNewImport } from './routes/artist/new'
 import { Route as ArtistIdRouteImport } from './routes/artist/$id/route'
@@ -39,12 +38,6 @@ const IndexRoute = IndexImport.update({
 const TestIndexRoute = TestIndexImport.update({
   id: '/test/',
   path: '/test/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const GenreIndexRoute = GenreIndexImport.update({
-  id: '/genre/',
-  path: '/genre/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -123,13 +116,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArtistIndexImport
       parentRoute: typeof ArtistRouteImport
     }
-    '/genre/': {
-      id: '/genre/'
-      path: '/genre'
-      fullPath: '/genre'
-      preLoaderRoute: typeof GenreIndexImport
-      parentRoute: typeof rootRoute
-    }
     '/test/': {
       id: '/test/'
       path: '/test'
@@ -201,7 +187,6 @@ export interface FileRoutesByFullPath {
   '/artist/$id': typeof ArtistIdRouteRouteWithChildren
   '/artist/new': typeof ArtistNewRoute
   '/artist/': typeof ArtistIndexRoute
-  '/genre': typeof GenreIndexRoute
   '/test': typeof TestIndexRoute
   '/artist/$id/delete': typeof ArtistIdDeleteRoute
   '/artist/$id/update': typeof ArtistIdUpdateRoute
@@ -212,7 +197,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/artist/new': typeof ArtistNewRoute
   '/artist': typeof ArtistIndexRoute
-  '/genre': typeof GenreIndexRoute
   '/test': typeof TestIndexRoute
   '/artist/$id/delete': typeof ArtistIdDeleteRoute
   '/artist/$id/update': typeof ArtistIdUpdateRoute
@@ -226,7 +210,6 @@ export interface FileRoutesById {
   '/artist/$id': typeof ArtistIdRouteRouteWithChildren
   '/artist/new': typeof ArtistNewRoute
   '/artist/': typeof ArtistIndexRoute
-  '/genre/': typeof GenreIndexRoute
   '/test/': typeof TestIndexRoute
   '/artist/$id/delete': typeof ArtistIdDeleteRoute
   '/artist/$id/update': typeof ArtistIdUpdateRoute
@@ -241,7 +224,6 @@ export interface FileRouteTypes {
     | '/artist/$id'
     | '/artist/new'
     | '/artist/'
-    | '/genre'
     | '/test'
     | '/artist/$id/delete'
     | '/artist/$id/update'
@@ -251,7 +233,6 @@ export interface FileRouteTypes {
     | '/'
     | '/artist/new'
     | '/artist'
-    | '/genre'
     | '/test'
     | '/artist/$id/delete'
     | '/artist/$id/update'
@@ -263,7 +244,6 @@ export interface FileRouteTypes {
     | '/artist/$id'
     | '/artist/new'
     | '/artist/'
-    | '/genre/'
     | '/test/'
     | '/artist/$id/delete'
     | '/artist/$id/update'
@@ -274,14 +254,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ArtistRouteRoute: typeof ArtistRouteRouteWithChildren
-  GenreIndexRoute: typeof GenreIndexRoute
   TestIndexRoute: typeof TestIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ArtistRouteRoute: ArtistRouteRouteWithChildren,
-  GenreIndexRoute: GenreIndexRoute,
   TestIndexRoute: TestIndexRoute,
 }
 
@@ -297,7 +275,6 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/artist",
-        "/genre/",
         "/test/"
       ]
     },
@@ -328,9 +305,6 @@ export const routeTree = rootRoute
     "/artist/": {
       "filePath": "artist/index.tsx",
       "parent": "/artist"
-    },
-    "/genre/": {
-      "filePath": "genre/index.tsx"
     },
     "/test/": {
       "filePath": "test/index.tsx"

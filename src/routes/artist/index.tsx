@@ -1,30 +1,25 @@
 import { createFileRoute, getRouteApi } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-
 import { getAllZodSchema } from "@/lib/generic-validation";
-import tableColumns from "./-table-columns";
-import useTableColumnsVisibilityStore, {
-  useTableVisibleColumns,
-} from "@/store/use-table-columns-visibility-store";
+import { useTableVisibility } from "@/store/use-table-columns-visibility-store";
 import ActionControls from "./-action-controls";
 import usePagination from "@/hooks/usePagination";
-import DataTable from "@/components/data-table/data-table";
 import TableFooter from "@/components/data-table/table-footer";
 import useSort from "@/hooks/useSort";
 import LoadingElement from "@/components/general/loading-element";
 import ErrorPage from "@/components/general/error-page";
 import PageNotFound from "@/components/general/page-not-found";
 import PageBreadcrumb from "@/components/general/page-breadcrumb";
+import { useDataTable } from "@/hooks/useDataTable";
+import DataTable from "@/components/data-table/data-table";
+import tableColumns from "./-table-columns";
 
 const ArtistRoute = () => {
   const routeApi = getRouteApi("/artist/");
   const routeData = routeApi.useLoaderData();
-  const tableVisibleColumns = useTableVisibleColumns("artist");
-  const toggleTableVisibility = useTableColumnsVisibilityStore(
-    (state) => state.toggleTableVisibility
-  );
+
+  const tableVisibility = useTableVisibility("artist");
 
   const pagination = usePagination({
     initialPageSize: routeData.pagination.limit,
@@ -37,30 +32,24 @@ const ArtistRoute = () => {
     routeFrom: "/artist",
   });
 
-  const table = useReactTable({
+  const dataTable = useDataTable({
     data: routeData?.data,
     columns: tableColumns,
-    state: {
-      columnVisibility: tableVisibleColumns,
-      pagination: pagination.state,
-      sorting: sort.state,
-    },
-    manualPagination: true,
-    manualSorting: true,
     rowCount: routeData.pagination.total,
-    onPaginationChange: pagination.setPagination,
-    onColumnVisibilityChange: (updater) =>
-      toggleTableVisibility("artist", updater),
-    onSortingChange: sort.setSorting,
-    getCoreRowModel: getCoreRowModel(),
+    paginationState: pagination.state,
+    columnVisibility: tableVisibility.state,
+    onToggleVisibilityChange: tableVisibility.toggleVisibility,
+    sortState: sort.state,
+    onPaginationChange: pagination.onPaginationChange,
+    onSortingChange: sort.onSortChange,
   });
 
   return (
     <main className="flex-1 overflow-hidden flex flex-col p-2 md:p-4 gap-2 md:gap-4">
       <PageBreadcrumb />
-      <ActionControls table={table} />
-      <DataTable table={table} />
-      <TableFooter table={table} />
+      <ActionControls dataTable={dataTable} />
+      <DataTable dataTable={dataTable} />
+      <TableFooter dataTable={dataTable} />
     </main>
   );
 };

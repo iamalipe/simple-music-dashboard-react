@@ -1,5 +1,4 @@
 import { Grid2x2 } from "lucide-react";
-import type { Table as TableType } from "@tanstack/react-table";
 
 import {
   DropdownMenu,
@@ -12,14 +11,17 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 
 import { Button } from "../ui/button";
+import { DataTable } from "@/hooks/useDataTable";
 
 export type ColumnsViewControlsProps<T> = {
-  table: TableType<T>;
+  dataTable: DataTable<T>;
 };
 const ColumnsViewControls = <T,>(props: ColumnsViewControlsProps<T>) => {
-  const { table } = props;
+  const { dataTable } = props;
   const isMobile = useIsMobile();
 
+  const hidableColumns = dataTable.columns.filter((col) => col.isHidable);
+  if (hidableColumns.length === 0) return null;
 
   return (
     <DropdownMenu>
@@ -32,22 +34,16 @@ const ColumnsViewControls = <T,>(props: ColumnsViewControlsProps<T>) => {
       <DropdownMenuContent align="end" className="w-[150px]">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {table
-          .getAllColumns()
-          .filter(
-            (column) =>
-              typeof column.accessorFn !== "undefined" && column.getCanHide()
-          )
-          .map((column) => (
-            <DropdownMenuCheckboxItem
-              key={column.id}
-              className="capitalize"
-              checked={column.getIsVisible()}
-              onCheckedChange={(checked) => column.toggleVisibility(checked)}
-            >
-              {column.columnDef.meta?.visibilityLabel || column.id}
-            </DropdownMenuCheckboxItem>
-          ))}
+        {hidableColumns.map((column) => (
+          <DropdownMenuCheckboxItem
+            key={column.id}
+            className="capitalize"
+            checked={column.columnVisibility}
+            onCheckedChange={(checked) => column.toggleVisibility(checked)}
+          >
+            {column.label}
+          </DropdownMenuCheckboxItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

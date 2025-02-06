@@ -1,5 +1,3 @@
-import type { Table as TableType } from "@tanstack/react-table";
-
 import {
   Select,
   SelectContent,
@@ -7,16 +5,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { DataTable } from "@/hooks/useDataTable";
 
 export type TableLimitProps<T> = {
-  table: TableType<T>;
+  dataTable: DataTable<T>;
   limits?: number[];
 };
 const TableLimit = <T,>(props: TableLimitProps<T>) => {
-  const { table } = props;
+  const { dataTable } = props;
   const limits = props.limits || [10, 25, 50, 100];
 
-  const pageSize = table.getState().pagination.pageSize;
+  const pageSize = dataTable.pagination.pageSize;
 
   return (
     <div className="flex items-center gap-3">
@@ -27,7 +26,13 @@ const TableLimit = <T,>(props: TableLimitProps<T>) => {
       </span>
       <Select
         value={`${pageSize}`}
-        onValueChange={(value) => table.setPageSize(Number(value))}
+        onValueChange={(value) =>
+          dataTable.onPaginationChange((prev) => ({
+            ...prev,
+            pageSize: Number(value),
+            pageIndex: 1,
+          }))
+        }
       >
         <SelectTrigger className="w-[80px]">
           <SelectValue placeholder={`${pageSize}`} />

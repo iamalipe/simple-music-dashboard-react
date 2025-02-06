@@ -1,17 +1,22 @@
-import type { Updater, VisibilityState } from "@tanstack/react-table";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type ColumnsVisibility = {
   tableKey: string;
-  columns: VisibilityState;
+  columns: {
+    [key: string]: boolean;
+  };
 };
 
 export type TableColumnsVisibilityStore = {
   tables: ColumnsVisibility[];
   toggleTableVisibility: (
     tableKey: string,
-    updater: Updater<VisibilityState>
+    updater:
+      | {
+          [key: string]: boolean;
+        }
+      | ((columns: { [key: string]: boolean }) => { [key: string]: boolean })
   ) => void;
 };
 
@@ -60,10 +65,18 @@ const useTableColumnsVisibilityStore = create(
   )
 );
 
-export const useTableVisibleColumns = (tableKey: string) => {
+export const useTableVisibility = (tableKey: string) => {
   const columnsState = useTableColumnsVisibilityStore((state) => state.tables);
+  const toggleTableVisibility = useTableColumnsVisibilityStore(
+    (state) => state.toggleTableVisibility
+  );
   const columns = columnsState.find((tables) => tables.tableKey === tableKey);
-  return columns?.columns;
+
+  const toggleVisibility = (params: { [key: string]: boolean }) => {
+    toggleTableVisibility(tableKey, params);
+  };
+
+  return { state: columns?.columns, toggleVisibility: toggleVisibility };
 };
 
 export default useTableColumnsVisibilityStore;

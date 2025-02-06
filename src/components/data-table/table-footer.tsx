@@ -1,29 +1,27 @@
-import type { Table as TableType } from "@tanstack/react-table";
-
+import { DataTable } from "@/hooks/useDataTable";
 import TablePagination from "./table-pagination";
 import TableLimit from "./table-limit";
 
 export type TableFooterProps<T> = {
-  table: TableType<T>;
+  dataTable: DataTable<T>;
 };
 const TableFooter = <T,>(props: TableFooterProps<T>) => {
-  const { table } = props;
+  const { dataTable } = props;
 
   return (
     <div className="flex items-center justify-between px-2 py-1 flex-none">
       <div className="text-xs text-muted-foreground flex flex-col">
+        {/* <span>
+          Selected: {0} of {dataTable.pagination.pageSize}
+        </span> */}
         <span>
-          Selected: {table.getSelectedRowModel().rows.length} of{" "}
-          {table.getState().pagination.pageSize}
-        </span>
-        <span>
-          Total : {table.getRowCount()} • Page:{" "}
-          {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          Total : {dataTable.pagination.rowCount} • Page:{" "}
+          {dataTable.pagination.pageIndex} of {dataTable.pagination.totalPages}
         </span>
       </div>
       <div className="flex items-center gap-2">
-        <TableLimit table={table} />
-        <TablePagination table={table} />
+        <TableLimit dataTable={dataTable} />
+        <TablePagination dataTable={dataTable} />
       </div>
     </div>
   );

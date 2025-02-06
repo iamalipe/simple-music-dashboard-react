@@ -1,6 +1,3 @@
-import { flexRender } from "@tanstack/react-table";
-import type { Table as TableType } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -9,58 +6,47 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-// import { TableColumns } from "@/types/table-type";
+import { DataTable as DataTableType } from "@/hooks/useDataTable";
 import TableSortHeader from "./table-sort-header";
 
 export type DataTableProps<T> = {
-  table: TableType<T>;
+  dataTable: DataTableType<T>;
 };
 
 const DataTable = <T,>(props: DataTableProps<T>) => {
-  const { table } = props;
+  const { dataTable } = props;
+
   return (
     <Table>
       <TableHeader className="z-10">
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow
-            className="border-b-0 table-header-box-shadow"
-            key={headerGroup.id}
-          >
-            {headerGroup.headers.map((header) => {
-              const renderData = header.isPlaceholder
-                ? null
-                : flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  );
-
-              return (
-                <TableHead
-                  onClick={header.column.getToggleSortingHandler}
-                  key={header.id}
-                >
-                  {header.column.getCanSort() ? (
-                    <TableSortHeader
-                      headerTitle={renderData}
-                      tableHeader={header}
-                    />
-                  ) : (
-                    renderData
-                  )}
+        <TableRow className="border-b-0 table-header-box-shadow">
+          {dataTable.columns
+            .filter((item) => item.columnVisibility)
+            .map((item) =>
+              item.isSortable ? (
+                <TableSortHeader
+                  dataTable={dataTable}
+                  key={item.id}
+                  item={item}
+                />
+              ) : (
+                <TableHead className="min-w-10" key={item.id}>
+                  {item.labelRender ? item.labelRender(item) : item.label}
                 </TableHead>
-              );
-            })}
-          </TableRow>
-        ))}
+              )
+            )}
+        </TableRow>
       </TableHeader>
       <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
+        {dataTable.rows.map((item) => (
+          <TableRow key={item.id as string}>
+            {dataTable.columns
+              .filter((item) => item.columnVisibility)
+              .map((colItem) => (
+                <TableCell key={colItem.id}>
+                  {colItem.render(item.data)}
+                </TableCell>
+              ))}
           </TableRow>
         ))}
       </TableBody>

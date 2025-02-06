@@ -1,5 +1,3 @@
-import type { Table as TableType } from "@tanstack/react-table";
-
 import {
   Pagination,
   PaginationContent,
@@ -12,12 +10,13 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
+import { DataTable } from "@/hooks/useDataTable";
 
 export type TablePaginationProps<T> = {
-  table: TableType<T>;
+  dataTable: DataTable<T>;
 };
 const TablePagination = <T,>(props: TablePaginationProps<T>) => {
-  const { table } = props;
+  const { dataTable } = props;
 
   return (
     <Pagination>
@@ -27,8 +26,13 @@ const TablePagination = <T,>(props: TablePaginationProps<T>) => {
             size="icon"
             variant="outline"
             title="Go to first page"
-            disabled={!table.getCanPreviousPage()}
-            onClick={() => table.setPageIndex(0)}
+            disabled={!dataTable.getCanPreviousPage()}
+            onClick={() =>
+              dataTable.onPaginationChange((prev) => ({
+                ...prev,
+                pageIndex: 1,
+              }))
+            }
           >
             <ChevronsLeft className="h-4 w-4" />
           </Button>
@@ -38,22 +42,32 @@ const TablePagination = <T,>(props: TablePaginationProps<T>) => {
             size="icon"
             variant="outline"
             title="Go to previous page"
-            disabled={!table.getCanPreviousPage()}
-            onClick={() => table.previousPage()}
+            disabled={!dataTable.getCanPreviousPage()}
+            onClick={() =>
+              dataTable.onPaginationChange((prev) => ({
+                ...prev,
+                pageIndex: prev.pageIndex - 1,
+              }))
+            }
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
         </PaginationItem>
         <PaginationItem className="px-3">
-          {table.getState().pagination.pageIndex + 1}
+          {dataTable.pagination.pageIndex}
         </PaginationItem>
         <PaginationItem>
           <Button
             size="icon"
             variant="outline"
             title="Go to next page"
-            disabled={!table.getCanNextPage()}
-            onClick={() => table.nextPage()}
+            disabled={!dataTable.getCanNextPage()}
+            onClick={() =>
+              dataTable.onPaginationChange((prev) => ({
+                ...prev,
+                pageIndex: prev.pageIndex + 1,
+              }))
+            }
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -63,8 +77,13 @@ const TablePagination = <T,>(props: TablePaginationProps<T>) => {
             size="icon"
             variant="outline"
             title="Go to last page"
-            disabled={!table.getCanNextPage()}
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!dataTable.getCanNextPage()}
+            onClick={() =>
+              dataTable.onPaginationChange((prev) => ({
+                ...prev,
+                pageIndex: dataTable.pagination.totalPages,
+              }))
+            }
           >
             <ChevronsRight className="h-4 w-4" />
           </Button>

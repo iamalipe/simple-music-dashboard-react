@@ -6,7 +6,7 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
 } from "@/components/ui/sidebar";
-import { Home, Music, FlaskConical, User } from "lucide-react";
+import { Home, FlaskConical, User } from "lucide-react";
 import AppSidebarMenuItem from "@/components/app-sidebar/app-sidebar-menu-item";
 
 export function AppSidebar() {
@@ -15,11 +15,6 @@ export function AppSidebar() {
       title: "Home",
       url: "/",
       icon: Home,
-    },
-    {
-      title: "Genre",
-      url: "/genre",
-      icon: Music,
     },
     {
       title: "Artist",

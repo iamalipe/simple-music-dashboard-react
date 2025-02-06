@@ -10,9 +10,7 @@ type UsePaginationProps = {
 };
 
 const usePagination = (props: UsePaginationProps) => {
-  const initialPageIndex = props.initialPageIndex
-    ? props.initialPageIndex - 1
-    : 0;
+  const initialPageIndex = props.initialPageIndex ? props.initialPageIndex : 0;
   const initialPageSize = props.initialPageSize ?? 10;
 
   const onChange = props.onChange;
@@ -36,12 +34,16 @@ const usePagination = (props: UsePaginationProps) => {
       search: (prev) => ({
         ...prev,
         limit: pagination.pageSize,
-        page: pagination.pageIndex + 1,
+        page: pagination.pageIndex,
       }),
     });
   }, [pagination, onChange, navigate]);
 
-  return { state: pagination, setPagination };
+  const onPaginationChange = (pageSize: number, pageIndex: number) => {
+    setPagination({ pageSize, pageIndex });
+  };
+
+  return { state: pagination, setPagination, onPaginationChange };
 };
 
 export default usePagination;

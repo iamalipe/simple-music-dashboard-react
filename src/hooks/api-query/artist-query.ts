@@ -6,13 +6,13 @@ import {
 } from "@tanstack/react-query";
 
 import api from "@/api/api";
-import { ArtistType, ArtistRawType } from "./../../api/artist-api";
+import { ArtistRawType } from "./../../api/artist-api";
 import { ApiQueryParams } from "@/types/generic-type";
 import { queryClient } from "../use-api-query";
 
 export const artistQueryKey = ["artist"];
 
-const getAllOptions = (params?: ApiQueryParams<ArtistType>) =>
+const getAllOptions = (params?: ApiQueryParams) =>
   queryOptions({
     queryKey: [...artistQueryKey, params],
     queryFn: () => api.artist.getAll(params),
@@ -27,10 +27,9 @@ const getOptions = (id: string) =>
 export const artistQuery = {
   // getAll
   getAllOptions,
-  getAll: (params?: ApiQueryParams<ArtistType>) =>
+  getAll: (params?: ApiQueryParams) =>
     queryClient.fetchQuery(getAllOptions(params)),
-  useGetAll: (params?: ApiQueryParams<ArtistType>) =>
-    useQuery(getAllOptions(params)),
+  useGetAll: (params?: ApiQueryParams) => useQuery(getAllOptions(params)),
 
   // get
   getOptions,
