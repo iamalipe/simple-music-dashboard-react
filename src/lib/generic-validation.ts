@@ -48,7 +48,10 @@ export const sortArrayZodSchema = z
   )
   .default([]);
 
-export type sortArrayZodSchemaType = z.infer<typeof sortArrayZodSchema>;
+export type sortArrayZodSchemaType = {
+  orderBy: string;
+  order: "asc" | "desc";
+}[];
 
 export const getAllZodSchema = z
   .object({
@@ -68,7 +71,7 @@ export const getAllZodSchema = z
       result.page = data.page;
     }
     if (Array.isArray(data.sort) && data.sort.length > 0) {
-      result.sort = data.sort;
+      result.sort = data.sort as sortArrayZodSchemaType;
     }
     if (data.limit !== 10) {
       result.limit = data.limit;
