@@ -16,6 +16,7 @@ import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import PageBreadcrumb from "@/components/general/page-breadcrumb";
 import { Link } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z.string().min(2).max(100),
@@ -43,6 +44,13 @@ const SingleForm = (props: SingleFormProps) => {
     mode: "onChange",
   });
 
+  useEffect(() => {
+    console.log("SingleForm Mount: mode", mode);
+    return () => {
+      console.log("SingleForm Unmount: mode", mode);
+    };
+  });
+
   const onSubmit = (data: FormSchemaType) => {
     props.onSubmit?.(data);
   };
@@ -58,6 +66,16 @@ const SingleForm = (props: SingleFormProps) => {
           )}
         </div>
         <div className="flex gap-2">
+          {mode !== "view" && (
+            <Button asChild>
+              <Link
+                to={mode === "create" ? "/artist" : "/artist/$id"}
+                params={{ id: id as string }}
+              >
+                Back
+              </Link>
+            </Button>
+          )}
           {mode === "view" && (
             <Button asChild>
               <Link to="/artist/$id/update" params={{ id: id as string }}>

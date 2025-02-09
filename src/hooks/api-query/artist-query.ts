@@ -62,8 +62,8 @@ export const artistQuery = {
         id: string;
         data: Partial<ArtistRawType>;
       }) => api.artist.update(id, data),
-      onSuccess: () =>
-        queryClient.invalidateQueries({ queryKey: artistQueryKey }),
+      onSuccess: (_, { id }) =>
+        queryClient.invalidateQueries({ queryKey: [...artistQueryKey, id] }),
     });
   },
   update: async ({
@@ -74,7 +74,7 @@ export const artistQuery = {
     data: Partial<ArtistRawType>;
   }) => {
     const result = await api.artist.update(id, data);
-    queryClient.invalidateQueries({ queryKey: artistQueryKey });
+    queryClient.invalidateQueries({ queryKey: [...artistQueryKey, id] });
     return result;
   },
 
