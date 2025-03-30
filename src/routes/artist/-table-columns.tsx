@@ -1,8 +1,8 @@
-import dayjs from "dayjs";
+import * as dayjs from "dayjs";
 import type { ArtistType } from "@/api/artist-api";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import LocalizedFormat from "dayjs/plugin/LocalizedFormat";
+import * as LocalizedFormat from "dayjs/plugin/LocalizedFormat";
 import { Link } from "@tanstack/react-router";
 import { DataTableColumn } from "@/hooks/useDataTable";
 dayjs.extend(LocalizedFormat);
