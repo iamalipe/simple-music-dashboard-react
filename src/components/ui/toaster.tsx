@@ -25,9 +25,19 @@ export function Toaster() {
             {action}
             <ToastClose />
           </Toast>
-        )
+          // <Toast key={id} {...props}>
+          //   <div className="grid gap-1">
+          //     {title && <ToastTitle>{title}</ToastTitle>}
+          //     {description && (
+          //       <ToastDescription>{description}</ToastDescription>
+          //     )}
+          //   </div>
+          //   {action}
+          //   <ToastClose />
+          // </Toast>
+        );
       })}
-      <ToastViewport />
+      <ToastViewport className="sm:bottom-1/2 sm:right-1/2 sm:flex-col sm:translate-x-1/2 sm:translate-y-1/2" />
     </ToastProvider>
-  )
+  );
 }
