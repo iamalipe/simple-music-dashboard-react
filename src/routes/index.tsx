@@ -1,21 +1,23 @@
 import ErrorPage from "@/components/general/error-page";
-import LoadingElement from "@/components/general/loading-element";
-import PageNotFound from "@/components/general/page-not-found";
+// import LoadingElement from "@/components/general/loading-element";
+// import PageNotFound from "@/components/general/page-not-found";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { createFileRoute } from "@tanstack/react-router";
+// import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/")({
-  component: Index,
-  errorComponent: ErrorPage,
-  notFoundComponent: PageNotFound,
-  pendingComponent: LoadingElement,
-  loader: () => ({
-    crumb: "Home",
-  }),
-});
+import { createBrowserRouter } from "react-router";
 
-function Index() {
+// export const Route = createFileRoute("/")({
+//   component: Index,
+//   errorComponent: ErrorPage,
+//   notFoundComponent: PageNotFound,
+//   pendingComponent: LoadingElement,
+//   loader: () => ({
+//     crumb: "Home",
+//   }),
+// });
+
+export function Index() {
   const onToastTest = () => {
     // toast({ title: "Toast Test" });
     toast({ title: "Toast Test" });
@@ -35,3 +37,17 @@ function Index() {
     </main>
   );
 }
+
+const rootRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <Index />,
+
+    ErrorBoundary: () => <ErrorPage />,
+    loader: async () => {
+      return { crumb: "Home" };
+    },
+  },
+]);
+
+export default rootRouter;

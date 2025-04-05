@@ -1,7 +1,11 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouteError } from "react-router";
 import { Button } from "../ui/button";
 
-const ErrorPage = (props: { error: Error }) => {
+const ErrorPage = () => {
+  const error = useRouteError()
+
+  const message = error?.message || "An unexpected error occurred."
+
   return (
     <main className="flex-1 overflow-hidden flex flex-col p-2 md:p-4 gap-2 md:gap-4">
       <div className="flex flex-col items-center justify-center h-full text-center">
@@ -10,9 +14,9 @@ const ErrorPage = (props: { error: Error }) => {
           The page you're looking for doesn't exist or an unexpected error
           occurred.
         </p>
-        {props.error?.message && (
+        {error?.message && (
           <p className="text-base mb-8 italic text-muted-foreground">
-            {props.error?.message}
+            {error?.message}
           </p>
         )}
         <Button asChild>
