@@ -68,26 +68,23 @@ const SingleForm = (props: SingleFormProps) => {
         <div className="flex gap-2">
           {mode !== "view" && (
             <Button asChild>
-              <Link
-                to={mode === "create" ? "/artist" : "/artist/$id"}
-                params={{ id: id as string }}
-              >
+              <Link to={".."} params={{ id: id as string }}>
                 Back
               </Link>
             </Button>
           )}
           {mode === "view" && (
             <Button asChild>
-              <Link to="/artist/$id/update" params={{ id: id as string }}>
+              {/* <Link to="/artist/$id/update" params={{ id: id as string }}>
                 Update
-              </Link>
+              </Link> */}
             </Button>
           )}
           {mode !== "create" && (
             <Button variant="destructive" asChild>
-              <Link to="/artist/$id/delete" params={{ id: id as string }}>
+              {/* <Link to="/artist/$id/delete" params={{ id: id as string }}>
                 Delete
-              </Link>
+              </Link> */}
             </Button>
           )}
         </div>

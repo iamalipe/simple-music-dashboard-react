@@ -1,11 +1,10 @@
-import * as dayjs from "dayjs";
 import type { ArtistType } from "@/api/artist-api";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import localizedFormat from "dayjs/plugin/localizedFormat";
 import { Link } from "@tanstack/react-router";
 import { DataTableColumn } from "@/hooks/useDataTable";
-dayjs.extend(localizedFormat);
+import { formatDate } from "@/lib/date-time";
+
 const tableColumns: DataTableColumn<ArtistType>[] = [
   {
     key: "select",
@@ -62,7 +61,7 @@ const tableColumns: DataTableColumn<ArtistType>[] = [
   {
     label: "Created At",
     key: "createdAt",
-    render: (info) => dayjs(info.createdAt).format("lll"),
+    render: (info) => formatDate(info.createdAt),
     isSortable: true,
   },
 ];

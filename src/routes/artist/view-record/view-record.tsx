@@ -1,12 +1,10 @@
-import { createFileRoute, getRouteApi } from "@tanstack/react-router";
-import SingleForm, { type FormSchemaType } from "../-single-form";
+import { getRouteApi } from "@tanstack/react-router";
+import SingleForm, {
+  FormSchemaType,
+} from "@/routes/artist/view-record/single-form";
 
-export const Route = createFileRoute("/artist/$id/")({
-  component: RouteComponent,
-});
-
-function RouteComponent() {
-  const routeApi = getRouteApi("/artist/$id");
+const routeApi = getRouteApi("/artist/$id");
+const ViewRecord = () => {
   const routeData = routeApi.useLoaderData();
   const mainData = routeData.data.data;
 
@@ -19,4 +17,6 @@ function RouteComponent() {
   return (
     <SingleForm defaultValues={defaultValues} id={mainData.id} mode="view" />
   );
-}
+};
+
+export default ViewRecord;

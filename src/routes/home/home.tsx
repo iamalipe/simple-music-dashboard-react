@@ -1,21 +1,7 @@
-import ErrorPage from "@/components/general/error-page";
-import LoadingElement from "@/components/general/loading-element";
-import PageNotFound from "@/components/general/page-not-found";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/")({
-  component: Index,
-  errorComponent: ErrorPage,
-  notFoundComponent: PageNotFound,
-  pendingComponent: LoadingElement,
-  loader: () => ({
-    crumb: "Home",
-  }),
-});
-
-function Index() {
+const Home = () => {
   const onToastTest = () => {
     // toast({ title: "Toast Test" });
     toast({ title: "Toast Test" });
@@ -34,4 +20,6 @@ function Index() {
       </div>
     </main>
   );
-}
+};
+
+export default Home;
