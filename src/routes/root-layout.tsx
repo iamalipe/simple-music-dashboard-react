@@ -6,7 +6,8 @@ import Header from "@/components/general/header";
 import Footer from "@/components/general/footer";
 import { AppSidebar } from "@/components/app-sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
+import AlertPopupProvider from "@/components/alert-popup/alert-popup-provider";
 
 function RootLayout() {
   return (
@@ -21,7 +22,8 @@ function RootLayout() {
         </div>
         <Footer />
       </div>
-      <Toaster />
+      <Toaster position="top-center" richColors visibleToasts={10} />
+      <AlertPopupProvider />
       <ReactQueryDevtools initialIsOpen={false} />
       <TanStackRouterDevtools />
     </>
