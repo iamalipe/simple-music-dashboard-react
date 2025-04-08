@@ -58,6 +58,7 @@ export const getAllZodSchema = z
     page: z.number().min(0).optional().default(1),
     limit: z.number().min(1).max(100).optional().default(10),
     sort: sortArrayZodSchema,
+    mode: z.enum(["CREATE", "UPDATE", "VIEW"]).optional(),
   })
   .transform((data) => {
     // Remove default values to return undefined for them
@@ -65,6 +66,7 @@ export const getAllZodSchema = z
       page?: number;
       limit?: number;
       sort?: sortArrayZodSchemaType;
+      mode?: "CREATE" | "UPDATE" | "VIEW";
     } = {};
 
     if (data.page !== 1) {
@@ -75,6 +77,9 @@ export const getAllZodSchema = z
     }
     if (data.limit !== 10) {
       result.limit = data.limit;
+    }
+    if (data.mode) {
+      result.mode = data.mode;
     }
     return result;
   });

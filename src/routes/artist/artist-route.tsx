@@ -12,7 +12,12 @@ const artistRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/artist",
   component: Artist,
-  loaderDeps: ({ search: { sort, limit, page } }) => ({ sort, limit, page }),
+  loaderDeps: ({ search: { sort, limit, page, mode } }) => ({
+    sort,
+    limit,
+    page,
+    mode,
+  }),
   loader: async ({ context: { apiQuery }, deps }) => ({
     data: await apiQuery.artist.getAll(deps),
     crumb: "Artist",

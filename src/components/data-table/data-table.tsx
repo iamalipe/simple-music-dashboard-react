@@ -77,10 +77,10 @@ const DataTableMobile = <T,>(props: DataTableProps<T>) => {
                   columnVisibility.length - 1 !== index && "border-b",
                 ])}
               >
-                <p className="w-2/5">{colItem.label}</p>
-                <p className="text-sm text-muted-foreground w-3/5">
+                <div className="w-2/5">{colItem.label}</div>
+                <div className="text-sm text-muted-foreground w-3/5">
                   {colItem.render(item.data)}
-                </p>
+                </div>
               </div>
             ))}
           </div>
