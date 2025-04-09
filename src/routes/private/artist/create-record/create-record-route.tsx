@@ -1,15 +1,15 @@
 import ErrorPage from "@/components/general/error-page";
 import LoadingElement from "@/components/general/loading-element";
 import PageNotFound from "@/components/general/page-not-found";
-import { rootRoute } from "@/routes/root-route";
 import { createRoute } from "@tanstack/react-router";
 import React from "react";
+import privateRoute from "@/routes/private/private-route";
 
 const createRecordRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => privateRoute,
   path: "/artist/new",
   component: React.lazy(
-    () => import("@/routes/artist/create-record/create-record")
+    () => import("@/routes/private/artist/create-record/create-record")
   ),
   loader: async () => ({
     crumb: "New Artist",

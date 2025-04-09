@@ -3,13 +3,13 @@ import usePagination from "@/hooks/usePagination";
 import useSort from "@/hooks/useSort";
 import { useTableVisibility } from "@/store/use-table-columns-visibility-store";
 import { getRouteApi } from "@tanstack/react-router";
-import ActionControls from "@/routes/artist/action-controls";
+import ActionControls from "@/routes/private/artist/action-controls";
 import DataTable from "@/components/data-table/data-table";
 import TableFooter from "@/components/data-table/table-footer";
 import { useDataTable } from "@/hooks/useDataTable";
-import tableColumns from "@/routes/artist/table-columns";
+import tableColumns from "@/routes/private/artist/table-columns";
 
-const routeApi = getRouteApi("/artist");
+const routeApi = getRouteApi("/_private/artist");
 const Artist = () => {
   const routeData = routeApi.useLoaderData();
 

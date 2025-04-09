@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getRouteApi } from "@tanstack/react-router";
 
-const routeApi = getRouteApi("/artist");
+const routeApi = getRouteApi("/_private/artist");
 const DialogForm = () => {
   const routeData = routeApi.useSearch();
   const navigate = routeApi.useNavigate();

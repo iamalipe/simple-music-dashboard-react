@@ -1,6 +1,7 @@
 import alertPopup from "@/components/alert-popup/alert-popup";
 import { Button } from "@/components/ui/button";
 import { sleep } from "@/lib/utils";
+import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 const Home = () => {
@@ -36,6 +37,7 @@ const Home = () => {
     <main className="flex-1 overflow-hidden flex flex-col p-2 md:p-4 gap-2 md:gap-4">
       <div>
         <h1>Private Home Page</h1>
+        <Link to="/artist">Hello</Link>
         <Button onClick={onToastTest}>Toast Test</Button>
         <Button onClick={onAlertTest}>Alert Test</Button>
       </div>

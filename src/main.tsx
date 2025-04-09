@@ -17,6 +17,8 @@ const router = createRouter({
     apiQuery: apiQuery,
     api: api,
   },
+  // defaultPreload: 'intent',
+  // defaultStaleTime: 5000,
 });
 
 declare module "@tanstack/react-router" {

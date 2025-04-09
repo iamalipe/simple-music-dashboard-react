@@ -10,9 +10,9 @@ const ErrorPage = (props: { error: Error }) => {
           The page you're looking for doesn't exist or an unexpected error
           occurred.
         </p>
-        {props.error?.message && (
+        {props?.error?.message && (
           <p className="text-base mb-8 italic text-muted-foreground">
-            {props.error?.message}
+            {props?.error?.message}
           </p>
         )}
         <Button asChild>

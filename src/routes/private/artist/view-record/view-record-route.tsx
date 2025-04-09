@@ -2,15 +2,15 @@ import ErrorPage from "@/components/general/error-page";
 import LoadingElement from "@/components/general/loading-element";
 import PageNotFound from "@/components/general/page-not-found";
 import { getOneZodSchema } from "@/lib/generic-validation";
-import { rootRoute } from "@/routes/root-route";
 import { createRoute } from "@tanstack/react-router";
 import React from "react";
+import privateRoute from "@/routes/private/private-route";
 
 const viewRecordRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => privateRoute,
   path: "/artist/$id",
   component: React.lazy(
-    () => import("@/routes/artist/view-record/view-record")
+    () => import("@/routes/private/artist/view-record/view-record")
   ),
   loader: async ({ context: { apiQuery }, params: { id } }) => {
     const data = await apiQuery.artist.get(id);
