@@ -3,16 +3,13 @@ import "@tanstack/react-query";
 
 import type { ApiErrorResponse } from "@/types/generic-type";
 
-// import all api-query
-import { genreQuery } from "./api-query/genre-query";
-import { artistQuery } from "./api-query/artist-query";
-
 declare module "@tanstack/react-query" {
   interface Register {
     defaultError: ApiErrorResponse | Error;
   }
 }
 
+// Create and export queryClient first to avoid circular dependencies
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -26,9 +23,15 @@ export const queryClient = new QueryClient({
   },
 });
 
+// Import query modules after exporting queryClient
+import { genreQuery } from "./api-query/genre-query";
+import { artistQuery } from "./api-query/artist-query";
+import { authQuery } from "./api-query/auth-query";
+
 const apiQuery = {
-  genre: genreQuery,
-  artist: artistQuery,
+  genre: genreQuery(queryClient),
+  artist: artistQuery(queryClient),
+  auth: authQuery(queryClient),
 };
 
 export type ApiQuery = typeof apiQuery;

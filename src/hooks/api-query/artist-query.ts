@@ -8,7 +8,7 @@ import {
 import api from "@/api/api";
 import { ArtistRawType } from "./../../api/artist-api";
 import { ApiQueryParams } from "@/types/generic-type";
-import { queryClient } from "../use-api-query";
+import { QueryClient } from "@tanstack/react-query";
 
 export const artistQueryKey = ["artist"];
 
@@ -24,7 +24,7 @@ const getOptions = (id: string) =>
     queryFn: () => api.artist.get(id),
   });
 
-export const artistQuery = {
+export const artistQuery = (queryClient: QueryClient) => ({
   // getAll
   getAllOptions,
   getAll: (params?: ApiQueryParams) =>
@@ -92,4 +92,4 @@ export const artistQuery = {
     queryClient.invalidateQueries({ queryKey: artistQueryKey });
     return result;
   },
-};
+});

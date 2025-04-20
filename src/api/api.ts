@@ -7,11 +7,13 @@ import { artistAPI } from "./artist-api";
 import { albumAPI } from "./album-api";
 import { playlistAPI } from "./playlist-api";
 import { songAPI } from "./song-api";
+import { authAPI } from "./auth-api";
 
 // Axios instance configuration
 const VITE_API_URL = (import.meta.env.VITE_API_URL as string) || "";
 export const axiosInstance = axios.create({
   baseURL: VITE_API_URL,
+  withCredentials: true,
 });
 
 // Export all APIs
@@ -21,6 +23,7 @@ const api = {
   album: albumAPI(axiosInstance),
   playlist: playlistAPI(axiosInstance),
   song: songAPI(axiosInstance),
+  auth: authAPI(axiosInstance),
 };
 
 export type ApiType = typeof api;

@@ -3,12 +3,12 @@ import {
   useQuery,
   useQueryClient,
   queryOptions,
+  QueryClient,
 } from "@tanstack/react-query";
 
 import api from "@/api/api";
 import { GenreRawType } from "@/api/genre-api";
 import { ApiQueryParams } from "@/types/generic-type";
-import { queryClient } from "../use-api-query";
 
 export const genreQueryKey = ["genre"];
 
@@ -24,7 +24,7 @@ const getOptions = (id: string) =>
     queryFn: () => api.genre.get(id),
   });
 
-export const genreQuery = {
+export const genreQuery = (queryClient: QueryClient) => ({
   // getAll
   getAllOptions,
   getAll: (params?: ApiQueryParams) =>
@@ -81,4 +81,4 @@ export const genreQuery = {
     queryClient.invalidateQueries({ queryKey: genreQueryKey });
     return result;
   },
-};
+});
